@@ -51,7 +51,7 @@ outOfRange(Elem,Bound):-
 
 
 %trasforma(Azione,Stato(sudoku),NuovoStato)
-trasforma(assegna,Sudoku,NuovoSudoku),
+trasforma(assegna,Sudoku,NuovoSudoku):-
     pos(Riga,Colonna),
     nth1(Riga, SudokuPrecedente, RigaCorrente),
     nth1(Colonna,RigaCorrente,ValoreCella).
