@@ -1,58 +1,71 @@
-%applicabile(Azione,Stato(sudoku))
-%predicato built-in per accedere agli elementi di una lista tramite l'indice.
-applicabile(assegna, Sudoku) :-
-    pos(Riga,Colonna),
-    nth1(Riga, Sudoku, RigaCorrente),
-    nth1(Colonna, RigaCorrente, ValoreCella), %per prendere il valore prendo la colonna della riga
-    ValoreCella == 0.
-    %bestCella()
+%% FUNZIONI applicabile()
 
-% bestCella :- 
-%     checkvincoli righe
-%     checkvincoli colonne
-%     check griglia
-%     check solo 1 possibilita
+applicabile(assegna,pos(Riga,Colonna)):-
+    inRange(pos(Riga,Colonna)),
+    \+cella(pos(Riga,Colonna),ValoreCella),
+    write("Casella vuota in posizione("),write(Riga),write(":"),write(Colonna).
 
-applicabile(scorriRiga, _) :-
-    pos(Riga,Colonna),
-    num_colonne(NMaxColonne),
-    % LimiteColonne is NMaxColonne+1,
-    NuovaColonna is Colonna+1,
-    \+outOfRange(NuovaColonna,NMaxColonne),
-    % LimiteColonne\==NuovaColonna, 
+applicabile(scorri,pos(Riga,Colonna)):-
+    inRange(pos(Riga,Colonna)).    
 
-    %non sono da fare in trasforma?? 
-    retractall(pos(_,_)),
-    assert(pos(Riga,NuovaColonna)).
+applicabile(scorriRiga,pos(Riga,Colonna)):-
+    num_righe(MaxRighe),
+    Riga < MaxRighe,
+    num_colonne(MaxColonne),
+    Colonna == MaxColonne.
 
-applicabile(cambioRiga,_):-
-    pos(Riga,Colonna),
-    num_righe(NMaxRighe),
-    % LimiteRighe is NMaxRighe+1,
+% TO-DO: definire il caso base delle azioni di uscita
+% applicabile(finito,pos(Riga,Colonna)):
+%     num_colonne(MaxColonne),
+%     num_righe(MaxRighe),
+%     Riga == MaxRighe,
+%     Colonna == MaxColonne.
+
+applicabile(ricomincia,pos(Riga,Colonna)):-
+    num_colonne(MaxColonne),
+    num_righe(MaxRighe),
+    Riga == MaxRighe,
+    Colonna == MaxColonne.
+    
+%% PREDICATI AUSILIARI
+
+% Verifica se la posizione passata si trova nel sudoku
+inRange(pos(RigaAttuale,ColonnaAttuale)):-
+    num_colonne(MaxColonne),
+    num_righe(MaxRighe),
+    RigaAttuale =< MaxRighe,!,
+    ColonnaAttuale =< MaxColonne,!.
+
+%% FUNZIONI trasforma()
+
+% parameter: assegna
+%   La funzione ha il compito di assegnare ad una casella vuota un valore
+%   secondo la strategia di ricerca.
+trasforma(assegna,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
+    cella(pos(Riga,Colonna),ValoreVuoto),
     NuovaRiga is Riga+1,
-    \+outOfRange(NuovaRiga,NMaxRighe),
-    % LimiteRighe\==NuovaRiga,
+    NuovaColonna is Colonna,
+    write(ValoreVuoto).
 
+% parameter: scorri
+%   La funzione ha il compito di scorrere la posizione della colonna, 
+%   aggiornato lo stato attuale.
+trasforma(scorri,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
+    NuovaColonna is Colonna+1,
+    inRange(pos(Riga,NuovaColonna)),
+    NuovaRiga is Riga.
 
-    %non sono da fare in trasforma?? 
-    retractall(pos(_,_)),
-    assert(pos(NuovaRiga,Colonna)).
+% parameter: scorriRiga
+%   La funzione ha il compito di scorrere la posizione della riga dopo
+%   averla esaminata, aggiornando lo stato.
+trasforma(scorriRiga,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
+    NuovaRiga is Riga+1,
+    inRange(pos(NuovaRiga,Colonna)),
+    NuovaColonna is 1.
 
-applicabile(daCapo,_) :-
-    
-    
-    retractall(pos(_,_)),
-    assert(pos(1,1)).
-
-
-% Funzione di controllo sul limite del sudoku
-outOfRange(Elem,Bound):-
-    Bound < Elem.
-
-
-%trasforma(Azione,Stato(sudoku),NuovoStato)
-trasforma(assegna,Sudoku,NuovoSudoku):-
-    pos(Riga,Colonna),
-    nth1(Riga, SudokuPrecedente, RigaCorrente),
-    nth1(Colonna,RigaCorrente,ValoreCella).
-    %sostituzione elemento lista
+% parameter: ricomincia
+%   La funzione ha il compito di riposizionare il solver sullo stato 
+%   iniziale se non si è ancora trovata una soluzione
+trasforma(ricomincia,pos(_,_),pos(NuovaRiga,NuovaColonna)):-
+    NuovaRiga is 1,
+    NuovaColonna is 1.
