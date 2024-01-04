@@ -31,6 +31,9 @@ applicabile(assegna, Sudoku) :-
 %     retractall(pos(_,_)),
 %     assert(pos(NuovaRiga,Colonna)).
 
+% outOfRange(Elem,Bound):-
+%     Bound < Elem.
+
 
 applicabile(scorriRiga, _) :-
     pos(Riga,Colonna),
@@ -59,6 +62,8 @@ applicabile(daCapo,_) :-
     
     retractall(pos(_,_)),
     assert(pos(1,1)).
+
+
 
 
 %trasforma(Azione,Stato(sudoku),NuovoStato)
