@@ -13,6 +13,25 @@ applicabile(assegna, Sudoku) :-
 %     check griglia
 %     check solo 1 possibilita
 
+
+% applicabile(scorriRiga, Sudoku) :-
+%     pos(Riga,Colonna),
+%     num_colonne(NMaxColonne),
+%     NuovaColonna is Colonna+1,
+%     \+outOfRange(NuovaColonna,NMaxColonne),
+%     retractall(pos(_,_)),
+%     assert(pos(Riga,NuovaColonna)).
+
+
+% applicabile(cambioRiga,Sudoku):-
+%     pos(Riga,Colonna),
+%     num_righe(NMaxRighe),
+%     NuovaRiga is Riga+1,
+%     \+outOfRange(NuovaRiga,NMaxRighe),
+%     retractall(pos(_,_)),
+%     assert(pos(NuovaRiga,Colonna)).
+
+
 applicabile(scorriRiga, _) :-
     pos(Riga,Colonna),
     num_colonne(NMaxColonne),
