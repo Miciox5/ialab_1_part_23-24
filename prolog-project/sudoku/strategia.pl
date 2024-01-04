@@ -17,6 +17,13 @@ risolvi(S,[_|_],_):-
     trasforma(Azione,S,SNuovo),
     risolvi(SNuovo,[_|_],_),!.
 
-risolvi(pos(Riga,Colonna),[_|_],_):-
-    applicabile(ricomincia,S),
-    trasforma(ricomincia,S,SNuovo).
+
+% TO-DO: tentativo di stop sull'azione di ricomincia
+% risolvi(pos(Riga,Colonna),[_|_],_):-
+%     applicabile(ricomincia,S),
+%     trasforma(ricomincia,S,SNuovo).
+
+%% CONCLUSIONE:
+%   Attualmente, la scansione viene fatta in loop, stampando
+%   le posizioni delle caselle vuote, che in questo caso sono fatti
+%   non definiti.
