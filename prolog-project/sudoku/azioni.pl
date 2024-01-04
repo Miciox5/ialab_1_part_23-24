@@ -13,34 +13,13 @@ applicabile(assegna, Sudoku) :-
 %     check griglia
 %     check solo 1 possibilita
 
-
-% applicabile(scorriRiga, Sudoku) :-
-%     pos(Riga,Colonna),
-%     num_colonne(NMaxColonne),
-%     NuovaColonna is Colonna+1,
-%     \+outOfRange(NuovaColonna,NMaxColonne),
-%     retractall(pos(_,_)),
-%     assert(pos(Riga,NuovaColonna)).
-
-
-% applicabile(cambioRiga,Sudoku):-
-%     pos(Riga,Colonna),
-%     num_righe(NMaxRighe),
-%     NuovaRiga is Riga+1,
-%     \+outOfRange(NuovaRiga,NMaxRighe),
-%     retractall(pos(_,_)),
-%     assert(pos(NuovaRiga,Colonna)).
-
-% outOfRange(Elem,Bound):-
-%     Bound < Elem.
-
-
 applicabile(scorriRiga, _) :-
     pos(Riga,Colonna),
     num_colonne(NMaxColonne),
-    LimiteColonne is NMaxColonne+1,
+    % LimiteColonne is NMaxColonne+1,
     NuovaColonna is Colonna+1,
-    LimiteColonne\==NuovaColonna, 
+    \+outOfRange(NuovaColonna,NMaxColonne),
+    % LimiteColonne\==NuovaColonna, 
 
     %non sono da fare in trasforma?? 
     retractall(pos(_,_)),
@@ -49,11 +28,13 @@ applicabile(scorriRiga, _) :-
 applicabile(cambioRiga,_):-
     pos(Riga,Colonna),
     num_righe(NMaxRighe),
-    LimiteRighe is NMaxRighe+1,
+    % LimiteRighe is NMaxRighe+1,
     NuovaRiga is Riga+1,
-    LimiteRighe\==NuovaRiga,
+    \+outOfRange(NuovaRiga,NMaxRighe),
+    % LimiteRighe\==NuovaRiga,
 
 
+    %non sono da fare in trasforma?? 
     retractall(pos(_,_)),
     assert(pos(NuovaRiga,Colonna)).
 
@@ -64,6 +45,9 @@ applicabile(daCapo,_) :-
     assert(pos(1,1)).
 
 
+% Funzione di controllo sul limite del sudoku
+outOfRange(Elem,Bound):-
+    Bound < Elem.
 
 
 %trasforma(Azione,Stato(sudoku),NuovoStato)
