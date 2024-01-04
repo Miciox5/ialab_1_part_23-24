@@ -1,15 +1,18 @@
 % Predicato Wrapper
-prova(Cammino):-
-    iniziale(S0),risolvi(S0,Cammino,[]).
+risolviSudoku(Cammino):-
+    iniziale(SudokuIniziale), % Carica lo stato iniziale
+    risolvi(SudokuIniziale,Cammino,[]).
 
-risolvi(S,[],_):-
-    finale(S).
+risolvi(Sudoku,[],_):-
+    finale(Sudoku).
 
 % prova visita in profondità
 % risolvi([Riga|RestoSudoku],[Az|ListaAzioni],Visitati):-
 risolvi(Sudoku,[_|_],_):-
     applicabile(Azione,Sudoku).
-    % trasforma()
+    % trasforma(Azione,SudokuNuovo)
+    %\+member(Snuovo,Visitati),
+    %risoluzione(NuovoSudoku,ListaAzioni,[S|Visitati])
 
 % risolvi(Sudoku,[_|_],_):-
 %     applicabile(assegna(Riga,NuovaColonna,_),Sudoku).
