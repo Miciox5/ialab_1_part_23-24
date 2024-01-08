@@ -34,8 +34,10 @@ applicabile(cambiaRiga,pos(Riga,_)):-
  
 %% PREDICATI AUSILIARI
 
-valoreSicuro(cella(pos(Riga,Colonna),_)):-
-    mancaSoloUnNumeroRiga(Riga).
+% Ricerca di un VALORE SICURO da assegnare
+
+valoreSicuro(cella(pos(Riga,Colonna),ValoreDaAssegnare)):-
+    mancaSoloUnNumeroRiga(Riga,ValoreDaAssegnare).
 
 valoreSicuro(cella(pos(Riga,Colonna),ValoreDaAssegnare)):-
     mancaSoloUnNumeroColonna(Colonna,ValoreDaAssegnare).    
@@ -43,18 +45,28 @@ valoreSicuro(cella(pos(Riga,Colonna),ValoreDaAssegnare)):-
 %valoreSicuro(cella(pos(Riga,Colonna),ValoreDaAssegnare)):-
     %mancaSoloUnNumeroGriglia(Colonna,ValoreDaAssegnare).
 
+% Ricerca nella RIGA
 
-mancaSoloUnNumeroRiga(Riga):-
+mancaSoloUnNumeroRiga(Riga,ValoreDaAssegnare):-
     contaNumeriRiga(Riga,Valori),
     length(Valori, Ris),
     write(Ris),
-    num_colonne(MaxColonne),
+    num_righe(MaxRighe),
     NuovoRis is Ris+1,
-    NuovoRis == MaxColonne.
-    % assegnaNumeroMancanteRiga(Colonna, Valori, ValoreDaAssegnare).
+    NuovoRis == MaxRighe,
+    assegnaNumeroMancanteRiga(Riga, Valori, ValoreDaAssegnare).
 
 contaNumeriRiga(Riga,Valori):-
     findall(Valore, cella(pos(Riga, _), Valore), Valori).
+
+assegnaNumeroMancanteRiga(Riga, Valori, ValoreDaAssegnare):-
+    valoreMaxPossibile(Max),
+    between(1, Max, Numero),  % Prova con ogni numero possibile nella colonna
+    \+ member(Numero, Valori),      % Verifica se il numero non è presente nella colonna
+    write("Assegna numero "), write(Numero),
+    ValoreDaAssegnare is Numero.
+
+% Ricerca nella COLONNA
 
 mancaSoloUnNumeroColonna(Colonna, ValoreDaAssegnare):-
     contaNumeriColonna(Colonna, Valori),
@@ -74,6 +86,8 @@ assegnaNumeroMancanteColonna(Colonna, Valori, ValoreDaAssegnare):-
     \+ member(Numero, Valori),      % Verifica se il numero non è presente nella colonna
     write("Assegna numero "), write(Numero),
     ValoreDaAssegnare is Numero.
+
+
 
 % Verifica se la posizione passata si trova nel sudoku
 % inRange(pos(RigaAttuale,ColonnaAttuale)):-
