@@ -1,7 +1,7 @@
 strategiaDiRicerca(Cammino):-
     iniziale(pos(RStart,CStart)),
-    RStart == CStart, CStart == 1,
-    risolvi(pos(RStart,CStart),Cammino,[]),!.
+    %RStart == CStart, CStart == 1,  %perchè tutti questi controlli
+    risolvi(pos(RStart,CStart),Cammino).
 
 % strategiaDiRicerca(Cammino):-
 %     retractall(pos(_,_)),
@@ -9,13 +9,13 @@ strategiaDiRicerca(Cammino):-
 %     iniziale(S0),
 %     risolvi(S0,Cammino,[]),!.
 
-risolvi(S,[],_):-
+risolvi(_,[]):-
     finale.
 
-risolvi(S,[_|_],_):-
+risolvi(S,[Azione|ListaAzioni]):-
     applicabile(Azione,S),
     trasforma(Azione,S,SNuovo),
-    risolvi(SNuovo,[_|_],_),!.
+    risolvi(SNuovo,ListaAzioni).
 
 
 % TO-DO: tentativo di stop sull'azione di ricomincia

@@ -1,66 +1,117 @@
+:- dynamic cella/2.  %per modificare dinamicamente la base di conoscenza durante l'esecuzione
+
 %% FUNZIONI applicabile()
 
-applicabile(assegna,pos(Riga,Colonna)):-
-    inRange(pos(Riga,Colonna)),
-    \+cella(pos(Riga,Colonna),ValoreCella),
-    write("Casella vuota in posizione("),write(Riga),write(":"),write(Colonna).
-
-applicabile(scorri,pos(Riga,Colonna)):-
-    inRange(pos(Riga,Colonna)).    
-
-applicabile(scorriRiga,pos(Riga,Colonna)):-
+applicabile(ricomincia,pos(Riga,Colonna)):-
     num_righe(MaxRighe),
-    Riga < MaxRighe,
+    Riga==MaxRighe,
     num_colonne(MaxColonne),
-    Colonna == MaxColonne.
+    NuovaColonna is Colonna+1,
+    NuovaColonna>MaxColonne.
+    
+applicabile(assegna(ValoreDaAssegnare),pos(Riga,Colonna)):-
+    \+cella(pos(Riga,Colonna),_),
+    write("Casella vuota in posizione("),write(Riga),write(":"),write(Colonna),
+    valoreSicuro(cella(pos(Riga,Colonna),ValoreDaAssegnare)).
 
-% TO-DO: definire il caso base delle azioni di uscita
-% applicabile(finito,pos(Riga,Colonna)):
+applicabile(scorriRiga,pos(_,Colonna)):-
+    num_colonne(MaxColonne),
+    NuovaColonna is Colonna+1,
+    NuovaColonna =< MaxColonne.
+ 
+applicabile(cambiaRiga,pos(Riga,_)):-
+    num_righe(MaxRighe),
+    NuovaRiga is Riga+1,
+    NuovaRiga =< MaxRighe.
+
+% TO-DO: definire il caso base delle azioni di uscita  ??????????????????????????
+% applicabile(finito,pos(Riga,Colonna)):   
 %     num_colonne(MaxColonne),
 %     num_righe(MaxRighe),
 %     Riga == MaxRighe,
 %     Colonna == MaxColonne.
 
-applicabile(ricomincia,pos(Riga,Colonna)):-
-    num_colonne(MaxColonne),
-    num_righe(MaxRighe),
-    Riga == MaxRighe,
-    Colonna == MaxColonne.
-    
+ 
 %% PREDICATI AUSILIARI
 
-% Verifica se la posizione passata si trova nel sudoku
-inRange(pos(RigaAttuale,ColonnaAttuale)):-
+valoreSicuro(cella(pos(Riga,Colonna),_)):-
+    mancaSoloUnNumeroRiga(Riga).
+
+valoreSicuro(cella(pos(Riga,Colonna),ValoreDaAssegnare)):-
+    mancaSoloUnNumeroColonna(Colonna,ValoreDaAssegnare).    
+    
+%valoreSicuro(cella(pos(Riga,Colonna),ValoreDaAssegnare)):-
+    %mancaSoloUnNumeroGriglia(Colonna,ValoreDaAssegnare).
+
+
+mancaSoloUnNumeroRiga(Riga):-
+    contaNumeriRiga(Riga,Valori),
+    length(Valori, Ris),
+    write(Ris),
     num_colonne(MaxColonne),
+    NuovoRis is Ris+1,
+    NuovoRis == MaxColonne.
+    % assegnaNumeroMancanteRiga(Colonna, Valori, ValoreDaAssegnare).
+
+contaNumeriRiga(Riga,Valori):-
+    findall(Valore, cella(pos(Riga, _), Valore), Valori).
+
+mancaSoloUnNumeroColonna(Colonna, ValoreDaAssegnare):-
+    contaNumeriColonna(Colonna, Valori),
+    length(Valori, Ris),
+    write(Ris),
     num_righe(MaxRighe),
-    RigaAttuale =< MaxRighe,!,
-    ColonnaAttuale =< MaxColonne,!.
+    NuovoRis is Ris + 1,
+    NuovoRis == MaxRighe,
+    assegnaNumeroMancanteColonna(Colonna, Valori, ValoreDaAssegnare).
+
+contaNumeriColonna(Colonna, Valori):-
+    findall(Valore, cella(pos(_, Colonna), Valore), Valori).
+
+assegnaNumeroMancanteColonna(Colonna, Valori, ValoreDaAssegnare):-
+    valoreMaxPossibile(Max),
+    between(1, Max, Numero),  % Prova con ogni numero possibile nella colonna
+    \+ member(Numero, Valori),      % Verifica se il numero non è presente nella colonna
+    write("Assegna numero "), write(Numero),
+    ValoreDaAssegnare is Numero.
+
+% Verifica se la posizione passata si trova nel sudoku
+% inRange(pos(RigaAttuale,ColonnaAttuale)):-
+%     num_colonne(MaxColonne),
+%     num_righe(MaxRighe),
+%     RigaAttuale =< MaxRighe,!,
+%     ColonnaAttuale =< MaxColonne,!.
 
 %% FUNZIONI trasforma()
 
 % parameter: assegna
 %   La funzione ha il compito di assegnare ad una casella vuota un valore
 %   secondo la strategia di ricerca.
-trasforma(assegna,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
-    cella(pos(Riga,Colonna),ValoreVuoto),
-    NuovaRiga is Riga+1,
-    NuovaColonna is Colonna,
-    write(ValoreVuoto).
+
+% trasforma(assegna,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
+%     cella(pos(Riga,Colonna),ValoreVuoto),
+%     NuovaRiga is Riga+1,
+%     NuovaColonna is Colonna,
+%     write(ValoreVuoto).
+
+trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
+    assert(cella(pos(Riga, Colonna), ValoreDaAssegnare)),
+    NuovaColonna is Colonna+1.
 
 % parameter: scorri
 %   La funzione ha il compito di scorrere la posizione della colonna, 
 %   aggiornato lo stato attuale.
-trasforma(scorri,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
-    NuovaColonna is Colonna+1,
-    inRange(pos(Riga,NuovaColonna)),
-    NuovaRiga is Riga.
+trasforma(scorriRiga,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
+    NuovaColonna is Colonna+1.
+    %inRange(pos(Riga,NuovaColonna)).
+    %NuovaRiga is Riga.
 
 % parameter: scorriRiga
 %   La funzione ha il compito di scorrere la posizione della riga dopo
 %   averla esaminata, aggiornando lo stato.
-trasforma(scorriRiga,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
+trasforma(cambiaRiga,pos(Riga,_),pos(NuovaRiga,NuovaColonna)):-
     NuovaRiga is Riga+1,
-    inRange(pos(NuovaRiga,Colonna)),
+    %inRange(pos(NuovaRiga,Colonna)),
     NuovaColonna is 1.
 
 % parameter: ricomincia
