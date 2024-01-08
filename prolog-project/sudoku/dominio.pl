@@ -39,6 +39,21 @@ cella(pos(4,1),1).
 % cella(pos(4,3),0).
 % cella(pos(4,4),0).
 
+%% Aggiunta informazione sulle griglie
+
+% Prima griglia
+griglia(pos(1,1),pos(2,2),1).
+
+% Seconda griglia
+griglia(pos(1,3),pos(2,4),2).
+
+% Terza griglia
+griglia(pos(3,1),pos(4,2),3).
+
+% Quarta griglia
+griglia(pos(3,3),pos(4,4),4).
+
+
 %% PREDICATO DI USCITA: 
 %    Il predicato di uscita controlla se i fatti mancanti (caselle vuote 
 %    e poi riempite) sono stati definiti nella KB.
