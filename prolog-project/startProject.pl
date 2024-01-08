@@ -21,4 +21,4 @@ main_program :-
     strategiaDiRicerca(Cammino).
     % If you want to start an interactive shell, you can use the following:
     % prolog.
-    halt.  % Exit SWI-Prolog after executing the main program
+    % halt.  % Exit SWI-Prolog after executing the main program
