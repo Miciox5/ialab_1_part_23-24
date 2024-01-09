@@ -91,31 +91,23 @@ assegnaNumeroMancanteColonna(Colonna, Valori, ValoreDaAssegnare):-
 % Ricerca nella GRIGLIA
 
 mancaSoloUnNumeroGriglia(Riga, Colonna, ValoreDaAssegnare):-
-    trovaGriglia(pos(Riga,Colonna), NumeroGriglia),
+    % trovaGriglia(pos(Riga,Colonna), NumeroGriglia),
+    griglia(pos(Riga,Colonna),NumeroGriglia),
     write(NumeroGriglia),
     % contaNumeriGriglia(Griglia, Valori).
-    contaNumeriGriglia(NumeroGriglia, NValoriInGriglia,ValoreDaAssegnare),
-    write("NUMERO DA ASSEGNARE:"),
-    write(ValoreDaAssegnare).
-    % write(ValoriInGriglia), nl,
-    %length(ValoriInGriglia, Ris).
-    % write(Ris).
-    % num_righe(MaxRighe),
-    % NuovoRis is Ris + 1,
-    % NuovoRis == MaxRighe,
-    % assegnaNumeroMancanteGriglia(Riga, Colonna, Valori, ValoreDaAssegnare).
-
-trovaGriglia(Posizione, NumeroGriglia) :-
-    clause(griglia(NumeroGriglia, ListaPosizioni), _).
-
-contaNumeriGriglia(NumeroGriglia, ValoriInGriglia,ValoreDaAssegnare):-
-    griglia(NumeroGriglia, ListaPosizioni),
-    prendiValoriInGriglia(ListaPosizioni, ValoriInGriglia),
+    contaNumeriGriglia(NumeroGriglia, ValoriInGriglia),
     length(ValoriInGriglia,NValoriInGriglia),
     Ris is NValoriInGriglia+1,
     valoreMaxPossibile(Max),
     Ris == Max,
     assegnaNumeroMancanteGriglia(ValoriInGriglia,ValoreDaAssegnare).
+
+% trovaGriglia(Posizione, NumeroGriglia) :-
+%     clause(griglia(NumeroGriglia, ListaPosizioni), _).
+
+contaNumeriGriglia(NumeroGriglia, ValoriInGriglia):-
+    findall(Posizione,griglia(Posizione,NumeroGriglia),ListaPosizioni),
+    prendiValoriInGriglia(ListaPosizioni, ValoriInGriglia).
 
 prendiValoriInGriglia([], []).
 prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
@@ -129,45 +121,6 @@ assegnaNumeroMancanteGriglia(ValoriInGriglia,ValoreDaAssegnare):-
     \+ member(Numero, ValoriInGriglia),      % Verifica se il numero non è presente nella colonna
     write("Assegna numero "), write(Numero),
     ValoreDaAssegnare is Numero.
-
-    % Utilizza findall per raccogliere tutte le posizioni della griglia
-    %findall(Valore, (member(Pos, Griglia), cella(Pos, Valore)), ValoriInGriglia),
-    %write(ValoriInGriglia).
-    % Eliminiamo nella lista di valori nella griglia la posizione in esame
-    %select(pos(Riga,Colonna), PosizioniInGriglia, NewPosizioniInGriglia),
-    %ValoriInGriglia = [],
-    % Recuperiamo ricorsivamente i valori nella griglia
-    %prendiValoriInGriglia(NewPosizioniInGriglia,ValoriInGriglia,ListaValori),
-    %write(ListaValori).
-    % Invertemo la lista prima di restituirla
-    % reverse(ValoriInGrigliaReversed, ValoriInGriglia).
-    
-% Caso base: la lista di posizioni è vuota
-% prendiValoriInGriglia([], ValoriInGriglia,ListaValori):-
-%     ListaValori = ValoriInGriglia,!.
-    % % Invertiamo la lista prima di restituirla
-    % reverse(ValoriInGrigliaReversed, ValoriInGriglia).
-
-% Caso ricorsivo: recuperiamo il valore nella cella corrente e continuamo con le restanti posizioni
-% prendiValoriInGriglia([PosizioneInGriglia|RestoPosizioniInGriglia], ValoriInGriglia ,ListaValori):-
-%     % Recuperiamo il valore nella cella corrente
-%     cella(PosizioneInGriglia, Valore),
-
-%     append([Valore], ListaValori, TempV),
-%     write(TempV), nl,
-%     % Chiamiamo ricorsivamente la funzione per le restanti posizioni
-%     prendiValoriInGriglia(RestoPosizioniInGriglia, UpdatedValoriInGriglia, ListaValori),
-%     append(TempV, UpdatedValoriInGriglia, ValoriInGriglia).
-
-
-
-
-% Verifica se la posizione passata si trova nel sudoku
-% inRange(pos(RigaAttuale,ColonnaAttuale)):-
-%     num_colonne(MaxColonne),
-%     num_righe(MaxRighe),
-%     RigaAttuale =< MaxRighe,!,
-%     ColonnaAttuale =< MaxColonne,!.
 
 %% FUNZIONI trasforma()
 
