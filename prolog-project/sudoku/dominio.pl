@@ -15,6 +15,13 @@ iniziale(pos(1,1)).
 %     Li ho lasciati commentati per verificare la 
 %     correttezza dell'azione assegna
 
+griglia(1,[pos(1,1),pos(1,2),pos(2,1),pos(2,2)]).
+% Prima griglia
+% griglia(,1).
+% griglia(,1).
+% griglia(,1).
+% griglia(,1).
+
 % Prima riga
 cella(pos(1,1),3).
 cella(pos(1,2),1).
@@ -41,32 +48,28 @@ cella(pos(4,1),1).
 
 %% Aggiunta informazione sulle griglie
 
-% Prima griglia
-griglia(pos(1,1),1).
-griglia(pos(1,2),1).
-griglia(pos(2,1),1).
-griglia(pos(2,2),1).
+
 
 %valoriGriglia(1,[1,3,4]).
 % valoriGriglia()
 
 % Seconda griglia
-griglia(pos(1,3),2).
-griglia(pos(1,4),2).
-griglia(pos(2,3),2).
-griglia(pos(2,4),2).
+% griglia(pos(1,3),2).
+% griglia(pos(1,4),2).
+% griglia(pos(2,3),2).
+% griglia(pos(2,4),2).
 
-% Terza griglia
-griglia(pos(3,1),3).
-griglia(pos(3,2),3).
-griglia(pos(4,1),3).
-griglia(pos(4,2),3).
+% % Terza griglia
+% griglia(pos(3,1),3).
+% griglia(pos(3,2),3).
+% griglia(pos(4,1),3).
+% griglia(pos(4,2),3).
 
-% Quarta griglia
-griglia(pos(3,3),4).
-griglia(pos(3,4),4).
-griglia(pos(4,3),4).
-griglia(pos(4,4),4).
+% % Quarta griglia
+% griglia(pos(3,3),4).
+% griglia(pos(3,4),4).
+% griglia(pos(4,3),4).
+% griglia(pos(4,4),4).
 
 %% PREDICATO DI USCITA: 
 %    Il predicato di uscita controlla se i fatti mancanti (caselle vuote 
