@@ -16,14 +16,14 @@ iniziale(pos(1,1)).
 %     correttezza dell'azione assegna
 
 % Prima riga
-%cella(pos(1,1),0).
+cella(pos(1,1),3).
 cella(pos(1,2),1).
-% cella(pos(1,3),0).
+cella(pos(1,3),2).
 cella(pos(1,4),4).
 
 % Seconda riga
 cella(pos(2,1),4).
-cella(pos(2,2),2).
+% cella(pos(2,2),2).
 % cella(pos(2,3),0).
 cella(pos(2,4),1).
 
@@ -42,17 +42,31 @@ cella(pos(4,1),1).
 %% Aggiunta informazione sulle griglie
 
 % Prima griglia
-griglia(pos(1,1),pos(2,2),1).
+griglia(pos(1,1),1).
+griglia(pos(1,2),1).
+griglia(pos(2,1),1).
+griglia(pos(2,2),1).
+
+%valoriGriglia(1,[1,3,4]).
+% valoriGriglia()
 
 % Seconda griglia
-griglia(pos(1,3),pos(2,4),2).
+griglia(pos(1,3),2).
+griglia(pos(1,4),2).
+griglia(pos(2,3),2).
+griglia(pos(2,4),2).
 
 % Terza griglia
-griglia(pos(3,1),pos(4,2),3).
+griglia(pos(3,1),3).
+griglia(pos(3,2),3).
+griglia(pos(4,1),3).
+griglia(pos(4,2),3).
 
 % Quarta griglia
-griglia(pos(3,3),pos(4,4),4).
-
+griglia(pos(3,3),4).
+griglia(pos(3,4),4).
+griglia(pos(4,3),4).
+griglia(pos(4,4),4).
 
 %% PREDICATO DI USCITA: 
 %    Il predicato di uscita controlla se i fatti mancanti (caselle vuote 
@@ -60,10 +74,11 @@ griglia(pos(3,3),pos(4,4),4).
 %    La definizione viene effettuata dalla strategia.
 finale:-
     % Prima riga
-    cella(pos(1,1),3),
+    % cella(pos(1,1),3),
     cella(pos(1,3),2),
 
     % Seconda riga
+    cella(pos(2,2),2),
     cella(pos(2,3),3),
 
     % Terza riga
@@ -74,5 +89,4 @@ finale:-
     cella(pos(4,2),3),
     cella(pos(4,3),4),
     cella(pos(4,4),2).
-
 

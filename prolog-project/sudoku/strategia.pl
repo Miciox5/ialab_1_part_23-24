@@ -1,6 +1,5 @@
 strategiaDiRicerca(Cammino):-
     iniziale(pos(RStart,CStart)),
-    %RStart == CStart, CStart == 1,  %perchè tutti questi controlli
     risolvi(pos(RStart,CStart),Cammino).
 
 % strategiaDiRicerca(Cammino):-
