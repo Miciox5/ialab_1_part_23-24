@@ -41,31 +41,35 @@ cella(pos(4,1),1).
 
 %% Aggiunta informazione sulle griglie
 
-% griglia(1,[pos(1,1),pos(1,2),pos(2,1),pos(2,2)]).
+griglia(1,[pos(1,1),pos(1,2),pos(2,1),pos(2,2)]).
+griglia(2,[pos(1,3),pos(1,4),pos(2,3),pos(2,4)]).
+griglia(3,[pos(3,1),pos(3,2),pos(4,1),pos(4,2)]).
+griglia(4,[pos(3,3),pos(3,4),pos(4,3),pos(4,3)]).
 
-% Prima griglia
-griglia(pos(1,1),1).
-griglia(pos(1,2),1).
-griglia(pos(2,1),1).
-griglia(pos(2,2),1).
 
-% Seconda griglia
-griglia(pos(1,3),2).
-griglia(pos(1,4),2).
-griglia(pos(2,3),2).
-griglia(pos(2,4),2).
+% % Prima griglia
+% griglia(pos(1,1),1).
+% griglia(pos(1,2),1).
+% griglia(pos(2,1),1).
+% griglia(pos(2,2),1).
 
-% % Terza griglia
-griglia(pos(3,1),3).
-griglia(pos(3,2),3).
-griglia(pos(4,1),3).
-griglia(pos(4,2),3).
+% % Seconda griglia
+% griglia(pos(1,3),2).
+% griglia(pos(1,4),2).
+% griglia(pos(2,3),2).
+% griglia(pos(2,4),2).
 
-% % Quarta griglia
-griglia(pos(3,3),4).
-griglia(pos(3,4),4).
-griglia(pos(4,3),4).
-griglia(pos(4,4),4).
+% % % Terza griglia
+% griglia(pos(3,1),3).
+% griglia(pos(3,2),3).
+% griglia(pos(4,1),3).
+% griglia(pos(4,2),3).
+
+% % % Quarta griglia
+% griglia(pos(3,3),4).
+% griglia(pos(3,4),4).
+% griglia(pos(4,3),4).
+% griglia(pos(4,4),4).
 
 %% PREDICATO DI USCITA: 
 %    Il predicato di uscita controlla se i fatti mancanti (caselle vuote 
