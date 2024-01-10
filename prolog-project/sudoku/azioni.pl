@@ -11,7 +11,7 @@ applicabile(ricomincia,pos(Riga,Colonna)):-
     
 applicabile(assegna(ValoreDaAssegnare),pos(Riga,Colonna)):-
     \+cella(pos(Riga,Colonna),_),
-    write("Casella vuota in posizione("),write(Riga),write(":"),write(Colonna)),
+    write("Casella vuota in posizione("),write(Riga),write(":"),write(Colonna),
     valoreSicuro(cella(pos(Riga,Colonna),ValoreDaAssegnare)).
 
 applicabile(scorriRiga,pos(_,Colonna)):-
