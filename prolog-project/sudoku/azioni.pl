@@ -11,7 +11,7 @@ applicabile(ricomincia,pos(Riga,Colonna)):-
     
 applicabile(assegna(ValoreDaAssegnare),pos(Riga,Colonna)):-
     \+cella(pos(Riga,Colonna),_),
-    write("Casella vuota in posizione("),write(Riga),write(":"),write(Colonna),
+    write("Casella vuota in posizione("),write(Riga),write(":"),write(Colonna)),
     valoreSicuro(cella(pos(Riga,Colonna),ValoreDaAssegnare)).
 
 applicabile(scorriRiga,pos(_,Colonna)):-
@@ -91,10 +91,7 @@ assegnaNumeroMancanteColonna(Colonna, Valori, ValoreDaAssegnare):-
 % Ricerca nella GRIGLIA
 
 mancaSoloUnNumeroGriglia(Riga, Colonna, ValoreDaAssegnare):-
-    % trovaGriglia(pos(Riga,Colonna), NumeroGriglia),
-    griglia(pos(Riga,Colonna),NumeroGriglia),
-    write(NumeroGriglia),
-    % contaNumeriGriglia(Griglia, Valori).
+    trovaGriglia(pos(Riga,Colonna), NumeroGriglia),
     contaNumeriGriglia(NumeroGriglia, ValoriInGriglia),
     length(ValoriInGriglia,NValoriInGriglia),
     Ris is NValoriInGriglia+1,
@@ -102,12 +99,17 @@ mancaSoloUnNumeroGriglia(Riga, Colonna, ValoreDaAssegnare):-
     Ris == Max,
     assegnaNumeroMancanteGriglia(ValoriInGriglia,ValoreDaAssegnare).
 
-% trovaGriglia(Posizione, NumeroGriglia) :-
-%     clause(griglia(NumeroGriglia, ListaPosizioni), _).
+trovaGriglia(Posizione, NumeroGriglia) :-
+    clause(griglia(NumeroGriglia, ListaPosizioni), _).
 
 contaNumeriGriglia(NumeroGriglia, ValoriInGriglia):-
-    findall(Posizione,griglia(Posizione,NumeroGriglia),ListaPosizioni),
+    griglia(NumeroGriglia, ListaPosizioni),
     prendiValoriInGriglia(ListaPosizioni, ValoriInGriglia).
+    % length(ValoriInGriglia,NValoriInGriglia),
+    % Ris is NValoriInGriglia+1,
+    % valoreMaxPossibile(Max),
+    % Ris == Max,
+    % assegnaNumeroMancanteGriglia(ValoriInGriglia,ValoreDaAssegnare).
 
 prendiValoriInGriglia([], []).
 prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
