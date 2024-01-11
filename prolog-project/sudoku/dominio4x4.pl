@@ -1,4 +1,4 @@
-% DOMINIO SUDOKU 2x2
+% DOMINIO SUDOKU 4x4
 
 :- retractall(cella(_, _)).  %per partire da uno stato pulito senza considerare i precedenti fatti asseriti
 
