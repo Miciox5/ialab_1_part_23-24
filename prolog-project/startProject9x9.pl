@@ -5,9 +5,9 @@
 
 main :-
     % Replace 'your_file.pl' with the actual name of your Prolog file
-    consult("sudoku/dominio9x9.pl"),
-    consult("sudoku/azioni.pl"),
-    consult("sudoku/strategia.pl"),
+    consult('sudoku/dominio9x9.pl'),
+    consult('sudoku/azioni.pl'),
+    consult('sudoku/strategia.pl'),
     write('File loaded. Ready to go!\n'),
     % Add any additional initialization or actions here
     % For example, you can start your main program or query user input

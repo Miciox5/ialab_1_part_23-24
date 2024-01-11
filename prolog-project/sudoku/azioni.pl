@@ -2,18 +2,19 @@
 
 %% FUNZIONI applicabile()
 
-    
-applicabile(assegna,pos(Riga,Colonna)):-
-    \+cella(pos(Riga,Colonna),_),
-    write("Casella vuota in posizione("),write(Riga),write(":"),write(Colonna),
-    valoreSicuro(cella(pos(Riga,Colonna))).
-
 applicabile(ricomincia,pos(Riga,Colonna)):-
     num_righe(MaxRighe),
     Riga==MaxRighe,
     num_colonne(MaxColonne),
-    NuovaColonna is Colonna+1,
-    NuovaColonna>MaxColonne.
+    Colonna>MaxColonne.
+    
+applicabile(assegna,pos(Riga,Colonna)):-
+    \+cella(pos(Riga,Colonna),_),
+    write('Casella vuota in posizione -> ('),write(Riga),write(':'),write(Colonna),write(')'),nl,
+    listaPossibili(LP),
+    retract(listaInEsame(L)),
+    assert(listaInEsame(LP)),
+    valoreSicuro(cella(pos(Riga,Colonna))).
 
 applicabile(scorriRiga,pos(_,Colonna)):-
     num_colonne(MaxColonne),
@@ -24,7 +25,6 @@ applicabile(cambiaRiga,pos(Riga,_)):-
     num_righe(MaxRighe),
     NuovaRiga is Riga+1,
     NuovaRiga =< MaxRighe.
-
  
 %% PREDICATI AUSILIARI
 
@@ -34,21 +34,20 @@ valoreSicuro(cella(pos(Riga,Colonna))):-
     controlloRiga(Riga),
     listaInEsame(L),
     length(L, NPossibili),
-    write(cella(pos(Riga,Colonna))), nl,
-    write(NPossibili),
     NPossibili == 1.
 
 valoreSicuro(cella(pos(Riga,Colonna))):-
     controlloColonna(Colonna),
     listaInEsame(L),
     length(L, NPossibili),
-    NPossibili == 1.   
+    NPossibili == 1.
     
 valoreSicuro(cella(pos(Riga,Colonna))):-
     controlloGriglia(Riga,Colonna),
     listaInEsame(L),
+    write('Lista valori possibili: '),write(L),nl,
     length(L, NPossibili),
-    NPossibili == 1.   
+    NPossibili == 1.
 
 % Ricerca nella RIGA
 
@@ -84,11 +83,14 @@ controlloGriglia(Riga, Colonna):-
     assert(listaInEsame(Sottrazione)).
 
 trovaGriglia(Posizione, NumeroGriglia) :-
-    clause(griglia(NumeroGriglia, ListaPosizioni), _).
+    griglia(NumeroGriglia,ListaPosizioni),
+    member(Posizione, ListaPosizioni),!.
+    % clause(griglia(NumeroGriglia, ListaPosizioni), true).
 
+% Aggiunti CUT, altrimenti andava su altre strade.
 trovaNumeriGriglia(NumeroGriglia, ValoriInGriglia):-
     griglia(NumeroGriglia, ListaPosizioni),
-    prendiValoriInGriglia(ListaPosizioni, ValoriInGriglia).
+    prendiValoriInGriglia(ListaPosizioni, ValoriInGriglia),!.
 
 prendiValoriInGriglia([], []).
 prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
@@ -105,10 +107,8 @@ prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
 trasforma(assegna,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
     listaInEsame(L),
     nth1(1, L, UnicoValore),
-    assert(cella(pos(Riga, Colonna),UnicoValore)),
-    listaPossibili(LP),
-    retract(listaInEsame(N)),
-    assert(listaInEsame(LP)),
+    write('Assegnamento: '),write(UnicoValore),nl,
+    assert(cella(pos(Riga, Colonna),UnicoValore)),!,
     NuovaColonna is Colonna+1.
 
 % parameter: scorri
