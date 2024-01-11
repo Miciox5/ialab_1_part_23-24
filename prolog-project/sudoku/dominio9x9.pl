@@ -96,5 +96,6 @@ griglia(9,[pos(7,7),pos(7,8),pos(7,9),
 %% PREDICATO DI USCITA: 
 %    Il predicato di uscita controlla se i fatti mancanti (caselle vuote 
 %    e poi riempite) sono stati definiti nella KB.
-finale:-
-
+finale.
+% finale:-
+%     cella(pos(1,1),4),
