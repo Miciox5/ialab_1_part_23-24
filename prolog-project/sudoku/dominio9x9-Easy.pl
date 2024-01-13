@@ -9,6 +9,7 @@ num_griglie(9).
 valoreMaxPossibile(9).
 
 :- dynamic listaInEsame/1.
+:- dynamic numeroCelle/1.
 
 listaPossibili([1,2,3,4,5,6,7,8,9]).
 
@@ -16,51 +17,72 @@ listaInEsame([1,2,3,4,5,6,7,8,9]).
 
 iniziale(pos(1,1)).
 
+numeroCelle(50).
+
 % I fatti commentati (mancanti nella KB) indicano le caselle vuote.
 
 % Prima riga
-cella(pos(1,1),4).
-cella(pos(1,8),9).
-
+cella(pos(1,2),9).
+cella(pos(1,3),1).
+cella(pos(1,8),5).
+cella(pos(1,9),3).
 % Seconda riga
-cella(pos(2,1),1).
-cella(pos(2,7),5).
-cella(pos(2,9),2).
-
+cella(pos(2,3),2).
+cella(pos(2,5),3).
+cella(pos(2,8),6).
 % Terza riga
-cella(pos(3,3),7).
-cella(pos(3,4),9).
-cella(pos(3,6),2).
-cella(pos(3,8),1).
+cella(pos(3,1),6).
+cella(pos(3,3),3).
+cella(pos(3,5),1).
+cella(pos(3,7),7).
+cella(pos(3,8),9).
+cella(pos(3,9),2).
 
 % Quarta riga
-cella(pos(4,3),5).
-cella(pos(4,4),2).
-cella(pos(4,6),3).
-
+cella(pos(4,1),5).
+cella(pos(4,2),7).
+cella(pos(4,3),9).
+cella(pos(4,4),4).
+cella(pos(4,5),8).
+cella(pos(4,6),2).
+cella(pos(4,8),1).
+cella(pos(4,9),6).
 % Quinta riga
-cella(pos(5,8),8).
-
+cella(pos(5,1),2).
+cella(pos(5,2),1).
+cella(pos(5,3),8).
+cella(pos(5,5),9).
+cella(pos(5,6),3).
+cella(pos(5,7),5).
+cella(pos(5,8),4).
+cella(pos(5,9),7).
 % Sesta riga
-cella(pos(6,2),9).
-cella(pos(6,4),1).
-cella(pos(6,7),4).
-cella(pos(6,9),5).
+cella(pos(6,2),3).
+cella(pos(6,3),6).
+cella(pos(6,4),5).
+cella(pos(6,5),7).
+cella(pos(6,6),1).
+cella(pos(6,7),2).
 
 % Settima riga
-cella(pos(7,1),8).
-cella(pos(7,2),7).
-cella(pos(7,9),3).
-
+cella(pos(7,1),9).
+cella(pos(7,2),2).
+cella(pos(7,3),4).
+cella(pos(7,5),5).
+cella(pos(7,6),8).
+cella(pos(7,7),6).
+cella(pos(7,9),1).
 % Ottava riga
-cella(pos(8,3),2).
-cella(pos(8,7),7).
-
+cella(pos(8,1),3).
+cella(pos(8,2),8).
+cella(pos(8,6),6).
+cella(pos(8,7),9).
+cella(pos(8,8),2).
+cella(pos(8,9),5).
 % Nona riga
-cella(pos(9,2),3).
-cella(pos(9,7),8).
-cella(pos(9,8),5).
-cella(pos(9,9),1).
+cella(pos(9,5),2).
+cella(pos(9,8),7).
+cella(pos(9,9),8).
 
 %% Aggiunta informazione sulle griglie
 
@@ -96,6 +118,6 @@ griglia(9,[pos(7,7),pos(7,8),pos(7,9),
 %% PREDICATO DI USCITA: 
 %    Il predicato di uscita controlla se i fatti mancanti (caselle vuote 
 %    e poi riempite) sono stati definiti nella KB.
-finale.
-% finale:-
-%     cella(pos(1,1),4),
+finale:-
+    numeroCelle(X),
+    X== 81.

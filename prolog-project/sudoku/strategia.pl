@@ -3,8 +3,10 @@ strategiaDiRicerca(Cammino):-
     risolvi(pos(RStart,CStart),Cammino).
 
 
-risolvi(_,[]):-
-    finale,!.
+risolvi(pos(R,C),[]):-
+    finale,!,
+    write('Lista celle finale:'),nl,
+    listing(cella/2).
 
 risolvi(S,[Azione|ListaAzioni]):-
     applicabile(Azione,S),
