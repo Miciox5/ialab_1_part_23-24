@@ -3,7 +3,7 @@ strategiaDiRicerca(Cammino):-
     risolvi(pos(RStart,CStart),Cammino).
 
 
-risolvi(pos(R,C),[]):-
+risolvi(pos(R,C),_):-
     finale,!,
     write('Lista celle finale:'),nl,
     listing(cella/2).

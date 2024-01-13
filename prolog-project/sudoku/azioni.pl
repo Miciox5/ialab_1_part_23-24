@@ -7,6 +7,8 @@ applicabile(ricomincia,pos(Riga,Colonna)):-
     Riga==MaxRighe,
     num_colonne(MaxColonne),
     Colonna > MaxColonne,
+    numeroCelle(NC),
+    write(NC),
     nl,write('---Entra in ricomincia---'),nl,nl.
 
 applicabile(assegna,pos(Riga,Colonna)):-
@@ -20,7 +22,8 @@ applicabile(assegna,pos(Riga,Colonna)):-
 applicabile(scorriRiga,pos(_,Colonna)):-
     num_colonne(MaxColonne),
     NuovaColonna is Colonna+1,
-    NuovaColonna =< MaxColonne.
+    MaxRange is MaxColonne+1,
+    NuovaColonna =< MaxRange.
  
 applicabile(cambiaRiga,pos(Riga,_)):-
     num_righe(MaxRighe),

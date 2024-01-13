@@ -17,7 +17,7 @@ listaInEsame([1,2,3,4,5,6,7,8,9]).
 
 iniziale(pos(1,1)).
 
-numeroCelle(50).
+numeroCelle(51).
 
 % I fatti commentati (mancanti nella KB) indicano le caselle vuote.
 
