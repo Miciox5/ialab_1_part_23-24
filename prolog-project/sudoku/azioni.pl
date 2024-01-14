@@ -1,5 +1,5 @@
 :- dynamic cella/2.  %per modificare dinamicamente la base di conoscenza durante l'esecuzione
-
+:- dynamic note/2.
 %% FUNZIONI applicabile()
 
 applicabile(ricomincia,pos(Riga,Colonna)):-
@@ -89,6 +89,11 @@ ricercaValoriPossibili(pos(Riga,Colonna),Risultato):-
 %     write('Risultato Singoli Nascosti'),
 %     write(Risultato),nl.
 
+ricercaValoriPossibili(pos(Riga,Colonna),Risultato):-
+    singoliNascosti(Riga,Colonna,Risultato).
+    % write('Risultato Singoli Nascosti'),
+    % write(Risultato),nl.
+
 %% TECNICHE
 
 %% Tecnica: Singoli Ovvi
@@ -107,29 +112,48 @@ singoliOvvi(Riga,Colonna,LPGriglie):-
     % da continuare.
 
 %% Tecnica: Singoli Nascosti
-% singoliNascosti(Riga,Colonna,Risultato):-
-%     listaPossibili(ListaPossibili),
-%     controlloRiga(Riga,ListaPossibili,LPRighe),
-%     controlloColonna(Colonna,LPRighe,LPColonne),
-%     controlloGriglia(Riga,Colonna,LPColonne,LPGriglie),
+singoliNascosti(Riga,Colonna,SingoloNascosto):-
+    write('--In singoli nascosti--'),nl,
+    listaPossibili(ListaPossibili),
+    controlloRiga(Riga,ListaPossibili,LPRighe),
+    controlloColonna(Colonna,LPRighe,LPColonne),
+    controlloGriglia(Riga,Colonna,LPColonne,LPGriglie),!,
 
-%     % Cerca la griglia
-%     griglia(NumeroGriglia, ListaElemInGriglia),
-%     member(pos(Riga,Colonn), ListaElemInGriglia),!,    
-%     findall(pos(R,C),)
+    % Cerca la griglia e crea le note dei possibili valori per ogni casella vuota
+    griglia(NumeroGriglia, ListaElemInGriglia),
+    member(pos(Riga,Colonna), ListaElemInGriglia),!,
+    select(pos(Riga,Colonna), ListaElemInGriglia, LEInGriglia),
+    LPVuote = [],
+    trovaPosizioniVuote(LEInGriglia,LPVuote,Result),!,
+    Inizio=[],
+    noteCella(Result,Inizio,Note),
+    % 
 
-%% Tecnica: Singoli Nascosti
-% singoliNascosti(Riga,Colonna,RisultatoF):-
-%     controlloRiga(Riga,ListaPossibili,LPRighe),
-%     controlloColonna(Colonna,LPRighe,LPColonne),
-%     controlloGriglia(Riga,Colonna,LPColonne,LPGriglie),
+    ricercaSingoloNascosto(LPGriglie,Note,SingoloNascosto),!,
+    write('Singolo Nascosto: '),
+    writeln(SingoloNascosto),
+    retractall(note(P,V)),!.
 
-%     griglia(NumeroGriglia, LPGriglie),
-%     member(Posizione, ListaPosizioniInGriglia),!,
-%     exclude(Goal, List1, List2),
-    
-%     write('Lista Posizioni In Griglia'),
-%     write(ListaPosizioniInGriglia),nl.
+trovaPosizioniVuote([],Result, Result).
+trovaPosizioniVuote([pos(R,C)|RestoPosizioni],LPVuote,Result):-
+    \+cella(pos(R,C),Valore),
+    trovaPosizioniVuote(RestoPosizioni,[pos(R,C)|LPVuote],Result).
+trovaPosizioniVuote([pos(R,C)|RestoPosizioni],LPVuote,Result):-
+    trovaPosizioniVuote(RestoPosizioni,LPVuote,Result).
+
+noteCella([],Ris,Ris).
+noteCella([pos(R,C)|AltrePosizioni], Celle, Ris):-
+    listaPossibili(ListaPossibili),
+    controlloRiga(R,ListaPossibili,LPRighe),
+    controlloColonna(C,LPRighe,LPColonne),
+    controlloGriglia(R,C,LPColonne,Possibili),
+    % assert(note(pos(R,C),Possibili)),
+    noteCella(AltrePosizioni,[note(pos(R,C),Possibili)|Celle],Ris).
+
+ricercaSingoloNascosto(Risultato , [], Risultato).
+ricercaSingoloNascosto(Possibili , [note(Posizione,VNota)|RestoVNota], Risultato):-
+    subtract(Possibili,VNota,NuoviPossibili),
+    ricercaSingoloNascosto(NuoviPossibili, RestoVNota, Risultato).
 
 % Ricerca nella RIGA
 
@@ -149,7 +173,7 @@ controlloGriglia(Riga, Colonna,Iniziale, Finale):-
     trovaValoriInGriglia(pos(Riga,Colonna),NumeroGriglia, ValoriInGriglia),
     subtract(Iniziale, ValoriInGriglia,Finale).
 
-trovaValoriInGriglia(Posizione,NumeroGriglia, ValoriInGriglia):-
+trovaValoriInGriglia(Posizione, NumeroGriglia, ValoriInGriglia):-
     griglia(NumeroGriglia, ListaPosizioni),
     member(Posizione, ListaPosizioni),!,
     prendiValoriInGriglia(ListaPosizioni, ValoriInGriglia),!.
@@ -188,19 +212,19 @@ prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
 
 %% Ricerca Valori in righe vicine
 
-ricercaValoreInRigheVicine([], Risultato, Risultato).
+% ricercaValoreInRigheVicine([], Risultato, Risultato).
 
-ricercaValoreInRigheVicine([pos(Riga, _)|AltrePRigheVicine], ListaValoriDaCercare, RisultatoFinale) :-
-    findall(Valore, cella(pos(Riga, _), Valore), ValoriInRiga),
-    ricercaValoreInRigheVicine(AltrePRigheVicine, [ValoriInRiga|ListaValoriDaCercare], RisultatoFinale).
+% ricercaValoreInRigheVicine([pos(Riga, _)|AltrePRigheVicine], ListaValoriDaCercare, RisultatoFinale) :-
+%     findall(Valore, cella(pos(Riga, _), Valore), ValoriInRiga),
+%     ricercaValoreInRigheVicine(AltrePRigheVicine, [ValoriInRiga|ListaValoriDaCercare], RisultatoFinale).
 
 %% Ricerca valori in colonne vicine
 
-ricercaValoreInColonneVicine([], Risultato, Risultato).
+% ricercaValoreInColonneVicine([], Risultato, Risultato).
 
-ricercaValoreInColonneVicine([pos(_, Colonna)|AltrePColonneVicine], ListaValoriDaCercare1, RisultatoFinale) :-
-    findall(Valore, cella(pos(_, Colonna), Valore), ValoriInColonna),
-    ricercaValoreInColonneVicine(AltrePColonneVicine, [ValoriInColonna|ListaValoriDaCercare1], RisultatoFinale).
+% ricercaValoreInColonneVicine([pos(_, Colonna)|AltrePColonneVicine], ListaValoriDaCercare1, RisultatoFinale) :-
+%     findall(Valore, cella(pos(_, Colonna), Valore), ValoriInColonna),
+%     ricercaValoreInColonneVicine(AltrePColonneVicine, [ValoriInColonna|ListaValoriDaCercare1], RisultatoFinale).
 
 %% Ricerca nelle colonne vicine
 
@@ -214,3 +238,18 @@ intersezioneDiListe(ListaDiListe, Intersezione):-
     
 intersezioneDiListe(ListaDiListe, Intersezione) :-
     nth1(1,ListaDiListe,Intersezione).
+
+%% Sottrazione Lista di Liste
+sottrazioneListaDiListe(ListeDiListe, Risultato) :-
+    length(ListeDiListe, NListaDiListe),
+    NListaDiListe >= 2, !,
+    foldl(sottrazioneDiListe, ListeDiListe, [], Risultato).
+
+% Predicato ausiliario per sottrarre una lista da un insieme
+sottrazioneDiListe(Lista, RisultatoParziale, RisultatoFinale) :-
+    subtract(RisultatoParziale, Lista, RisultatoFinale).
+
+
+% Unione di Liste di Liste
+unioneListaDiListe(ListeDiListe, Unione) :-
+    foldl(union, ListeDiListe, [], Unione).
