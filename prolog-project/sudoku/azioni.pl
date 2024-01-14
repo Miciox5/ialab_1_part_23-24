@@ -44,27 +44,17 @@ trasforma(ricomincia,pos(_,_),pos(NuovaRiga,NuovaColonna)):-
 %   La funzione ha il compito di assegnare ad una casella vuota un valore
 %   secondo la strategia di ricerca.
 
-% trasforma(assegna,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
-%     listaInEsame(L),
-%     nth1(Prove, L, UnicoValore),
-%     write('Assegnamento: '),write(UnicoValore),nl,
-%     assert(cella(pos(Riga, Colonna),UnicoValore)),
-%     numeroCelle(F),
-%     R is F+1,
-%     retract(numeroCelle(F)),
-%     assert(numeroCelle(R)),
-%     NuovaColonna is Colonna+1.
-
 trasforma(assegna,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
-    listaPossibili(LP),
-    ricercaValoriPossibili(cella(pos(Riga,Colonna)),LP,NewListaPossibili),
+    ricercaValoriPossibili(pos(Riga,Colonna),NewListaPossibili),
+    % write('NewListaPossibili: '),
+    % write(NewListaPossibili),nl,
     % Assegnamento one shot
     % --------
     length(NewListaPossibili, NPossibili),
     NPossibili >0,
     NPossibili ==1,
     nth1(1,NewListaPossibili,ValoreDaAssegnare),
-    write('Assegnamento: '),write(ValoreDaAssegnare),nl,
+    write('Assegnamento One Shot: '),write(ValoreDaAssegnare),nl,
     assert(cella(pos(Riga,Colonna),ValoreDaAssegnare)),
     % --------
     numeroCelle(NC),
@@ -72,23 +62,6 @@ trasforma(assegna,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
     retract(numeroCelle(_)),
     assert(numeroCelle(UpdateNC)),
     NuovaColonna is Colonna+1.
-
-% trasforma(assegna,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
-%     listaPossibili(LP),
-%     ricercaValoriPossibili(cella(pos(Riga,Colonna)),LP,NewListaPossibili),
-%     % Assegnamento one shot
-%     % --------
-%     length(NewListaPossibili, NPossibili),
-%     NPossibili >0,
-%     between(1, 2, NPossibili),
-%     nth1(Soluzione,NewListaPossibili,ValoreDaAssegnare),
-%     % assert(cella(pos(Riga,Colonna),ValoreDaAssegnare)),
-%     % --------
-%     numeroCelle(NC),
-%     UpdateNC is NC+1,
-%     retract(numeroCelle(_)),
-%     assert(numeroCelle(UpdateNC)),
-%     NuovaColonna is Colonna+1.
 
 % parameter: scorri
 %   La funzione ha il compito di scorrere la posizione della colonna, 
@@ -106,13 +79,57 @@ trasforma(cambiaRiga,pos(Riga,_),pos(NuovaRiga,NuovaColonna)):-
 
 %% PREDICATI AUSILIARI
 
-% Ricerca di un VALORE SICURO da assegnare
+% Applicazione tecniche di ricerca di valori ovvi
 
-ricercaValoriPossibili(cella(pos(Riga,Colonna)),ListaPossibili,NewListaPossibili):-
+ricercaValoriPossibili(pos(Riga,Colonna),Risultato):-
+    singoliOvvi(Riga,Colonna,Risultato).
+    
+% ricercaValoriPossibili(pos(Riga,Colonna),Risultato):-
+%     coppieOvvie(Riga,Colonna,Risultato),
+%     write('Risultato Singoli Nascosti'),
+%     write(Risultato),nl.
+
+%% TECNICHE
+
+%% Tecnica: Singoli Ovvi
+singoliOvvi(Riga,Colonna,LPGriglie):-
+    listaPossibili(ListaPossibili),
     controlloRiga(Riga,ListaPossibili,LPRighe),
     controlloColonna(Colonna,LPRighe,LPColonne),
-    controlloGriglia(Riga,Colonna,LPColonne,NewListaPossibili),
-    write('Lista valori possibili: '),write(NewListaPossibili),nl.
+    controlloGriglia(Riga,Colonna,LPColonne,LPGriglie).
+
+%% Tecnica: Coppie Ovvie
+% coppieOvvie(Riga,Colonna,LPGriglie):-
+%     listaPossibili(ListaPossibili),
+%     controlloRiga(Riga,ListaPossibili,LPRighe),
+%     controlloColonna(Colonna,LPRighe,LPColonne),
+%     controlloGriglia(Riga,Colonna,LPColonne,LPGriglie),
+    % da continuare.
+
+%% Tecnica: Singoli Nascosti
+% singoliNascosti(Riga,Colonna,Risultato):-
+%     listaPossibili(ListaPossibili),
+%     controlloRiga(Riga,ListaPossibili,LPRighe),
+%     controlloColonna(Colonna,LPRighe,LPColonne),
+%     controlloGriglia(Riga,Colonna,LPColonne,LPGriglie),
+
+%     % Cerca la griglia
+%     griglia(NumeroGriglia, ListaElemInGriglia),
+%     member(pos(Riga,Colonn), ListaElemInGriglia),!,    
+%     findall(pos(R,C),)
+
+%% Tecnica: Singoli Nascosti
+% singoliNascosti(Riga,Colonna,RisultatoF):-
+%     controlloRiga(Riga,ListaPossibili,LPRighe),
+%     controlloColonna(Colonna,LPRighe,LPColonne),
+%     controlloGriglia(Riga,Colonna,LPColonne,LPGriglie),
+
+%     griglia(NumeroGriglia, LPGriglie),
+%     member(Posizione, ListaPosizioniInGriglia),!,
+%     exclude(Goal, List1, List2),
+    
+%     write('Lista Posizioni In Griglia'),
+%     write(ListaPosizioniInGriglia),nl.
 
 % Ricerca nella RIGA
 
@@ -129,10 +146,10 @@ controlloColonna(Colonna,Iniziale, Finale):-
 % Ricerca nella GRIGLIA
 
 controlloGriglia(Riga, Colonna,Iniziale, Finale):-
-    trovaNumeriGriglia(pos(Riga,Colonna),NumeroGriglia, ValoriInGriglia),
+    trovaValoriInGriglia(pos(Riga,Colonna),NumeroGriglia, ValoriInGriglia),
     subtract(Iniziale, ValoriInGriglia,Finale).
 
-trovaNumeriGriglia(Posizione,NumeroGriglia, ValoriInGriglia):-
+trovaValoriInGriglia(Posizione,NumeroGriglia, ValoriInGriglia):-
     griglia(NumeroGriglia, ListaPosizioni),
     member(Posizione, ListaPosizioni),!,
     prendiValoriInGriglia(ListaPosizioni, ValoriInGriglia),!.
@@ -142,3 +159,58 @@ prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
     findall(Valore, cella(Posizione, Valore), Valori),
     append(Valori, RestoValoriInGriglia, ValoriInGriglia),
     prendiValoriInGriglia(RestoPosizioni, RestoValoriInGriglia).
+
+
+% Ricerca nelle righe vicine
+
+% controlloRigheVicine(Riga, Colonna, ListaP, IntersezioneColonne) :-
+%     griglia(NumeroGriglia, ListaPosizioni),
+%     member(pos(Riga, Colonna), ListaPosizioni), !,
+%     findall(pos(RigaQ, Colonna), member(pos(RigaQ, Colonna), ListaPosizioni), TestColonna),
+%     select(pos(Riga, Colonna), TestColonna, TestColonnaRes),
+%     ListaValoriDaCercare = [],
+%     ricercaValoreInRigheVicine(TestColonnaRes, ListaValoriDaCercare, ListaDiListeRighe),
+%     % Intersezione tra tutti i valori contenuti nelle altre due righe
+%     intersezioneDiListe(ListaDiListeRighe,RisultatoRighe),
+%     % Intersezione tra i valori possibili ed il risultato della funzione precedente
+%     intersection(ListaP,RisultatoRighe,IntersezioneRighe),
+%     findall(pos(Riga, ColonnaQ), member(pos(Riga, ColonnaQ), ListaPosizioni), TestRiga),
+%     select(pos(Riga, Colonna), TestRiga, TestRigaRes),
+%     ListaValoriDaCercare1 = [],
+%     ricercaValoreInColonneVicine(TestRigaRes, ListaValoriDaCercare1, ListaDiListeColonne),
+%     intersezioneDiListe(ListaDiListeColonne,RisultatoColonne),
+%     intersection(IntersezioneRighe,RisultatoColonne,IntersezioneColonne),
+%     write('Intersezione colonne: '),
+%     write(IntersezioneColonne),nl.
+    % length(Risultato,NRisultato),
+    % NRisultato == 1.
+    % controlloRiga()
+
+%% Ricerca Valori in righe vicine
+
+ricercaValoreInRigheVicine([], Risultato, Risultato).
+
+ricercaValoreInRigheVicine([pos(Riga, _)|AltrePRigheVicine], ListaValoriDaCercare, RisultatoFinale) :-
+    findall(Valore, cella(pos(Riga, _), Valore), ValoriInRiga),
+    ricercaValoreInRigheVicine(AltrePRigheVicine, [ValoriInRiga|ListaValoriDaCercare], RisultatoFinale).
+
+%% Ricerca valori in colonne vicine
+
+ricercaValoreInColonneVicine([], Risultato, Risultato).
+
+ricercaValoreInColonneVicine([pos(_, Colonna)|AltrePColonneVicine], ListaValoriDaCercare1, RisultatoFinale) :-
+    findall(Valore, cella(pos(_, Colonna), Valore), ValoriInColonna),
+    ricercaValoreInColonneVicine(AltrePColonneVicine, [ValoriInColonna|ListaValoriDaCercare1], RisultatoFinale).
+
+%% Ricerca nelle colonne vicine
+
+%% Intersezione Lista di Liste
+
+intersezioneDiListe(ListaDiListe, Intersezione):-
+    length(ListaDiListe,NListaDiListe),
+    NListaDiListe >=2,!,
+    foldl(intersection, ListaDiListe, Infinito, Intersezione),
+    Intersezione \= Infinito.  % Rimuovi l'elemento "infinito" che foldl usa come elemento iniziale.
+    
+intersezioneDiListe(ListaDiListe, Intersezione) :-
+    nth1(1,ListaDiListe,Intersezione).

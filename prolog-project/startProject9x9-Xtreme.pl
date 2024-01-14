@@ -17,10 +17,10 @@ main_program :-
     write('This is your main program.\n'),
     % Add your main program logic here
     % Enable tracing
-    % trace,
+    trace,
     % Call your predicate with trace enabled
     strategiaDiRicerca(Cammino).
     % If you want to start an interactive shell, you can use the following:
     % prolog.
     % halt.  % Exit SWI-Prolog after executing the main program
-    % nodebug.  % Disable tracing before entering the interactive shell
+    nodebug.  % Disable tracing before entering the interactive shell
