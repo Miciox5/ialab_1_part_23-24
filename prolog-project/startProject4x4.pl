@@ -5,7 +5,8 @@
 
 main :-
     % Replace 'your_file.pl' with the actual name of your Prolog file
-    consult("sudoku/dominio4x4difficile.pl"),
+    consult("sudoku/dominio4x4facile.pl"),
+    %consult("sudoku/dominio4x4difficile.pl"),
     consult("sudoku/azioni.pl"),
     consult("sudoku/strategia.pl"),
     write('File loaded. Ready to go!\n'),
