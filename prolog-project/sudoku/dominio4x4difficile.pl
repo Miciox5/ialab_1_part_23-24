@@ -39,7 +39,7 @@ vuota(pos(4,4),0).
 griglia(1,[pos(1,1),pos(1,2),pos(2,1),pos(2,2)]).
 griglia(2,[pos(1,3),pos(1,4),pos(2,3),pos(2,4)]).
 griglia(3,[pos(3,1),pos(3,2),pos(4,1),pos(4,2)]).
-griglia(4,[pos(3,3),pos(3,4),pos(4,3),pos(4,3)]).
+griglia(4,[pos(3,3),pos(3,4),pos(4,3),pos(4,4)]).
 
 
 %% PREDICATO DI USCITA: 
