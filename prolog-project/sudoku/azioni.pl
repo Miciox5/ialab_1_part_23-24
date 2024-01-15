@@ -1,86 +1,63 @@
-:- dynamic cella/2.  %per modificare dinamicamente la base di conoscenza durante l'esecuzione
 
-%% FUNZIONI applicabile()
+%APPLICABILE
 
-applicabile(ricomincia,pos(Riga,Colonna)):-
-    num_righe(MaxRighe),
-    Riga==MaxRighe,
-    num_colonne(MaxColonne),
-    Colonna>MaxColonne.
-    
-applicabile(assegna,pos(Riga,Colonna)):-
-    \+cella(pos(Riga,Colonna),_),
-    write('Casella vuota in posizione -> ('),write(Riga),write(':'),write(Colonna),write(')'),nl,
-    listaPossibili(LP),
-    retract(listaInEsame(L)),
-    assert(listaInEsame(LP)),
-    valoreSicuro(cella(pos(Riga,Colonna))).
+applicabile(assegna(X),pos(Riga,Colonna)):-
+    vuota(pos(Riga,Colonna),ValoreAsserito),
+    retract(vuota(pos(Riga,Colonna),ValoreAsserito)),
+    assert(vuota(pos(Riga,Colonna),0)),
+    listaPossibili(pos(Riga,Colonna),Lista),
+    length(Lista, Nvalori),
+    Nvalori >= 1,
+    member(X, Lista).
 
-applicabile(scorriRiga,pos(_,Colonna)):-
-    num_colonne(MaxColonne),
+    %valore(X).
+    %check righe, colonne, griglie
+
+
+applicabile(scorriRiga,pos(Riga,Colonna)):-
+    piena(pos(Riga,Colonna),Valore),
+    valoreMax(MaxColonne),
     NuovaColonna is Colonna+1,
-    NuovaColonna =< MaxColonne.
- 
-applicabile(cambiaRiga,pos(Riga,_)):-
-    num_righe(MaxRighe),
+    NuovaColonna =< MaxColonne,!.
+
+applicabile(cambiaRiga,pos(Riga,Colonna)):-
+    piena(pos(Riga,Colonna),Valore),
+    valoreMax(MaxRighe),
     NuovaRiga is Riga+1,
     NuovaRiga =< MaxRighe.
- 
-%% PREDICATI AUSILIARI
 
-% Ricerca di un VALORE SICURO da assegnare
-
-valoreSicuro(cella(pos(Riga,Colonna))):-
-    controlloRiga(Riga),
-    listaInEsame(L),
-    length(L, NPossibili),
-    NPossibili == 1.
-
-valoreSicuro(cella(pos(Riga,Colonna))):-
-    controlloColonna(Colonna),
-    listaInEsame(L),
-    length(L, NPossibili),
-    NPossibili == 1.
+%AUSILIARI
+listaPossibili(pos(Riga,Colonna),Lista):-
+    possibiliRiga(Riga,ListaPoxValRiga),
+    possibiliColonna(Colonna,ListaPoxColonna),
+    possibiliGriglia(pos(Riga,Colonna),ListaPoxGriglia),
+    write(ListaPoxValRiga),
+    write(ListaPoxColonna),
+    write(ListaPoxGriglia),
+    intersection(ListaPoxValRiga, ListaPoxColonna, TempIntersezione),
+    intersection(TempIntersezione, ListaPoxGriglia, Lista),
+    write(Lista).
     
-valoreSicuro(cella(pos(Riga,Colonna))):-
-    controlloGriglia(Riga,Colonna),
-    listaInEsame(L),
-    write('Lista valori possibili: '),write(L),nl,
-    length(L, NPossibili),
-    NPossibili == 1.
 
-% Ricerca nella RIGA
+possibiliRiga(Riga,ListaPoxValRiga):-
+    findall(Valore, piena(pos(Riga, _), Valore), ValoriPieneR),
+    findall(Valore, vuota(pos(Riga, _), Valore), ValoriVuoteR),
+    append(ValoriPieneR, ValoriVuoteR, ListaRiga),
+    listaPoxVal(L),
+    subtract(L, ListaRiga, ListaPoxValRiga).
 
-controlloRiga(Riga):-
-    findall(Valore, cella(pos(Riga, _), Valore), Valori),
-    listaInEsame(ListaInEsame),
-    subtract(ListaInEsame, Valori, Sottrazione),
-    %write(Sottrazione), nl,
-    retract(listaInEsame(ListaInEsame)),
-    assert(listaInEsame(Sottrazione)).
+possibiliColonna(Colonna,ListaPoxColonna):-
+    findall(Valore, piena(pos(_, Colonna), Valore), ValoriPieneC),
+    findall(Valore, vuota(pos(_, Colonna), Valore), ValoriVuoteC),
+    append(ValoriPieneC, ValoriVuoteC, ListaColonna),
+    listaPoxVal(L),
+    subtract(L, ListaColonna, ListaPoxColonna).
 
-% Ricerca nella COLONNA
-
-controlloColonna(Colonna):-
-    findall(Valore, cella(pos(_, Colonna), Valore), Valori),
-    length(Valori, Ris),
-    listaInEsame(ListaInEsame),
-    subtract(ListaInEsame, Valori, Sottrazione),
-    %write(Sottrazione), nl,
-    retract(listaInEsame(L)),
-    assert(listaInEsame(Sottrazione)).
-
-
-% Ricerca nella GRIGLIA
-
-controlloGriglia(Riga, Colonna):-
+possibiliGriglia(pos(Riga,Colonna),ListaPoxGriglia):-
     trovaGriglia(pos(Riga,Colonna), NumeroGriglia),
     trovaNumeriGriglia(NumeroGriglia, ValoriInGriglia),
-    listaInEsame(ListaInEsame),
-    subtract(ListaInEsame, ValoriInGriglia, Sottrazione),
-    %write(Sottrazione), nl,
-    retract(listaInEsame(L)),
-    assert(listaInEsame(Sottrazione)).
+    listaPoxVal(L),
+    subtract(L, ValoriInGriglia, ListaPoxGriglia).
 
 trovaGriglia(Posizione, NumeroGriglia) :-
     griglia(NumeroGriglia,ListaPosizioni),
@@ -94,40 +71,48 @@ trovaNumeriGriglia(NumeroGriglia, ValoriInGriglia):-
 
 prendiValoriInGriglia([], []).
 prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
-    findall(Valore, cella(Posizione, Valore), Valori),
+    findall(Valore, piena(Posizione, Valore), ValoriPiene),
+    findall(Valore, vuota(Posizione, Valore), ValoriVuote),
+    append(ValoriPiene, ValoriVuote, Valori),
     append(Valori, RestoValoriInGriglia, ValoriInGriglia),
     prendiValoriInGriglia(RestoPosizioni, RestoValoriInGriglia).
 
-%% FUNZIONI trasforma()
 
-% parameter: assegna
-%   La funzione ha il compito di assegnare ad una casella vuota un valore
-%   secondo la strategia di ricerca.
 
-trasforma(assegna,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
-    listaInEsame(L),
-    nth1(1, L, UnicoValore),
-    write('Assegnamento: '),write(UnicoValore),nl,
-    assert(cella(pos(Riga, Colonna),UnicoValore)),!,
-    NuovaColonna is Colonna+1.
+%TRASFORMA
 
-% parameter: scorri
-%   La funzione ha il compito di scorrere la posizione della colonna, 
-%   aggiornato lo stato attuale.
+trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
+    write("qui"),
+    (
+        % Se esiste un fatto vuota(pos(Riga, Colonna), _)
+        clause(vuota(pos(Riga, Colonna), _), _) -> 
+        retract(vuota(pos(Riga, Colonna), ValoreAsserito))        ;
+        % Altrimenti, prosegui senza retract
+        true
+    ),
+    assert(vuota(pos(Riga, Colonna), ValoreDaAssegnare)),
+    NuovaColonna is Colonna + 1,
+    valoreMax(MaxNColonne),
+    NuovaColonna =< MaxNColonne,!.
+
+trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
+    write("qui"),
+    (
+        % Se esiste un fatto vuota(pos(Riga, Colonna), _)
+        clause(vuota(pos(Riga, Colonna), _), _) -> 
+        retract(vuota(pos(Riga, Colonna), ValoreAsserito))        ;
+        % Altrimenti, prosegui senza retract
+        true
+    ),
+    assert(vuota(pos(Riga, Colonna), ValoreDaAssegnare)),
+    NuovaColonna is 1,
+    NuovaRiga is Riga +1.
+    
+
+
 trasforma(scorriRiga,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
     NuovaColonna is Colonna+1.
 
-
-% parameter: scorriRiga
-%   La funzione ha il compito di scorrere la posizione della riga dopo
-%   averla esaminata, aggiornando lo stato.
-trasforma(cambiaRiga,pos(Riga,_),pos(NuovaRiga,NuovaColonna)):-
+trasforma(cambiaRiga,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
     NuovaRiga is Riga+1,
-    NuovaColonna is 1.
-
-% parameter: ricomincia
-%   La funzione ha il compito di riposizionare il solver sullo stato 
-%   iniziale se non si è ancora trovata una soluzione
-trasforma(ricomincia,pos(_,_),pos(NuovaRiga,NuovaColonna)):-
-    NuovaRiga is 1,
     NuovaColonna is 1.

@@ -1,46 +1,38 @@
 % DOMINIO SUDOKU 4x4
+:- discontiguous vuota/2.
+:- discontiguous piena/2.
+:- dynamic vuota/2.
+:- retractall(vuota(_, _)).  %per partire da uno stato pulito senza considerare i precedenti fatti asseriti
 
-:- retractall(cella(_, _)).  %per partire da uno stato pulito senza considerare i precedenti fatti asseriti
+valoreMax(4).
 
-num_colonne(4).
-num_righe(4).
-num_griglie(4).
-
-valoreMaxPossibile(4).
-
-:- dynamic listaInEsame/1.
-
-listaPossibili([1,2,3,4]).
-
-listaInEsame([1,2,3,4]).
+listaPoxVal([1,2,3,4]).
 
 iniziale(pos(1,1)).
 
-% I fatti commentati (mancanti nella KB) indicano le caselle vuote.
-
 % Prima riga
-%cella(pos(1,1),3).
-cella(pos(1,2),1).
-%cella(pos(1,3),2).
-cella(pos(1,4),4).
+vuota(pos(1,1),0).
+piena(pos(1,2),3).
+vuota(pos(1,3),0).
+vuota(pos(1,4),0).
 
 % Seconda riga
-cella(pos(2,1),4).
-cella(pos(2,2),2).
-% cella(pos(2,3),0).
-cella(pos(2,4),1).
+vuota(pos(2,1),0).
+vuota(pos(2,2),0).
+vuota(pos(2,3),0).
+piena(pos(2,4),4).
 
 % Terza riga
-cella(pos(3,1),2).
-% cella(pos(3,2),0).
-% cella(pos(3,3),0).
-cella(pos(3,4),3).
+vuota(pos(3,1),0).
+vuota(pos(3,2),0).
+vuota(pos(3,3),0).
+vuota(pos(3,4),0).
 
 % Quarta riga
-cella(pos(4,1),1).
-% cella(pos(4,2),0).
-% cella(pos(4,3),0).
-% cella(pos(4,4),0).
+piena(pos(4,1),1).
+vuota(pos(4,2),0).
+piena(pos(4,3),2).
+vuota(pos(4,4),0).
 
 %% Aggiunta informazione sulle griglie
 
@@ -49,23 +41,25 @@ griglia(2,[pos(1,3),pos(1,4),pos(2,3),pos(2,4)]).
 griglia(3,[pos(3,1),pos(3,2),pos(4,1),pos(4,2)]).
 griglia(4,[pos(3,3),pos(3,4),pos(4,3),pos(4,3)]).
 
+
 %% PREDICATO DI USCITA: 
-%    Il predicato di uscita controlla se i fatti mancanti (caselle vuote 
-%    e poi riempite) sono stati definiti nella KB.
+
 finale:-
-    % Prima riga
-    cella(pos(1,1),3),
-    cella(pos(1,3),2),
+        vuota(pos(1,1),4),
+        vuota(pos(1,3),1),
+        vuota(pos(1,4),2),
 
-    % Seconda riga
-    %cella(pos(2,2),2),
-    cella(pos(2,3),3),
+        % Seconda riga
+        vuota(pos(2,1),2),
+        vuota(pos(2,2),1),
+        vuota(pos(2,3),3),
 
-    % Terza riga
-    cella(pos(3,2),4),
-    cella(pos(3,3),1),
+        % Terza riga
+        vuota(pos(3,1),3),
+        vuota(pos(3,2),2),
+        vuota(pos(3,3),4),
+        vuota(pos(3,4),1),
 
-    % Quarta riga
-    cella(pos(4,2),3),
-    cella(pos(4,3),4),
-    cella(pos(4,4),2).
+        % Quarta riga
+        vuota(pos(4,2),4),
+        vuota(pos(4,4),3).
