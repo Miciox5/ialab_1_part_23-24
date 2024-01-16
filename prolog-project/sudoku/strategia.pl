@@ -4,10 +4,14 @@ strategiaDiRicerca(Cammino):-
 
 
 risolvi(_,[]):-
-    finale.
+    finale,!,
+    listing(vuota/2).
 
 risolvi(S,[Azione|ListaAzioni]):-
     applicabile(Azione,S),
     trasforma(Azione,S,SNuovo),
     risolvi(SNuovo,ListaAzioni).
+
+
+
 

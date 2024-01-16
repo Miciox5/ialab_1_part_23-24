@@ -1,22 +1,25 @@
 
 %APPLICABILE
 
-applicabile(assegna(X), pos(Riga, Colonna)) :-
-    vuota(pos(Riga, Colonna), ValoreAsserito),
-    ( ValoreAsserito \= 0 ->
-        retract(vuota(pos(Riga, Colonna), ValoreAsserito)),
-        assert(vuota(pos(Riga, Colonna), 0))
-    ; % Altrimenti, prosegui senza retract
-        true
-    ),
-    listaPossibili(pos(Riga, Colonna), Lista),
+% Euristica: singoli ovvi
+applicabile(assegna(X),pos(Riga,Colonna)):-
+    vuota(pos(Riga,Colonna),ValoreAsserito),
+    retract(vuota(pos(Riga,Colonna),ValoreAsserito)),
+    assert(vuota(pos(Riga,Colonna),0)),
+    listaPossibili(pos(Riga,Colonna),Lista),
     length(Lista, Nvalori),
-    Nvalori >= 1,
+    Nvalori == 1,
+    nth1(1, Lista, X).
+
+% Forza bruta    
+applicabile(assegna(X),pos(Riga,Colonna)):-
+    vuota(pos(Riga,Colonna),ValoreAsserito),
+    retract(vuota(pos(Riga,Colonna),ValoreAsserito)),
+    assert(vuota(pos(Riga,Colonna),0)),
+    listaPossibili(pos(Riga,Colonna),Lista),
+    length(Lista, Nvalori),
+    Nvalori > 1,
     member(X, Lista).
-
-    %valore(X).
-    %check righe, colonne, griglie
-
 
 applicabile(scorriRiga,pos(Riga,Colonna)):-
     piena(pos(Riga,Colonna),Valore),
@@ -31,17 +34,17 @@ applicabile(cambiaRiga,pos(Riga,Colonna)):-
     NuovaRiga =< MaxRighe.
 
 %AUSILIARI
+
 listaPossibili(pos(Riga,Colonna),Lista):-
     possibiliRiga(Riga,ListaPoxValRiga),
     possibiliColonna(Colonna,ListaPoxColonna),
     possibiliGriglia(pos(Riga,Colonna),ListaPoxGriglia),
-    write(ListaPoxValRiga),
-    write(ListaPoxColonna),
-    write(ListaPoxGriglia),
+    % writeln(ListaPoxValRiga),
+    % writeln(ListaPoxColonna),
+    % writeln(ListaPoxGriglia),
     intersection(ListaPoxValRiga, ListaPoxColonna, TempIntersezione),
     intersection(TempIntersezione, ListaPoxGriglia, Lista),
-    write(Lista).
-    
+    writeln(Lista).
 
 possibiliRiga(Riga,ListaPoxValRiga):-
     findall(Valore, piena(pos(Riga, _), Valore), ValoriPieneR),
@@ -86,7 +89,7 @@ prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
 %TRASFORMA
 
 trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
-    write("qui"),
+    % writeln("qui"),
     (
         % Se esiste un fatto vuota(pos(Riga, Colonna), _)
         clause(vuota(pos(Riga, Colonna), _), _) -> 
@@ -100,7 +103,7 @@ trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
     NuovaColonna =< MaxNColonne,!.
 
 trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
-    write("qui"),
+    % writeln("qui"),
     (
         % Se esiste un fatto vuota(pos(Riga, Colonna), _)
         clause(vuota(pos(Riga, Colonna), _), _) -> 
