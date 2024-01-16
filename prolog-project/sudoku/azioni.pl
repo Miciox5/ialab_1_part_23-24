@@ -1,11 +1,15 @@
 
 %APPLICABILE
 
-applicabile(assegna(X),pos(Riga,Colonna)):-
-    vuota(pos(Riga,Colonna),ValoreAsserito),
-    retract(vuota(pos(Riga,Colonna),ValoreAsserito)),
-    assert(vuota(pos(Riga,Colonna),0)),
-    listaPossibili(pos(Riga,Colonna),Lista),
+applicabile(assegna(X), pos(Riga, Colonna)) :-
+    vuota(pos(Riga, Colonna), ValoreAsserito),
+    ( ValoreAsserito \= 0 ->
+        retract(vuota(pos(Riga, Colonna), ValoreAsserito)),
+        assert(vuota(pos(Riga, Colonna), 0))
+    ; % Altrimenti, prosegui senza retract
+        true
+    ),
+    listaPossibili(pos(Riga, Colonna), Lista),
     length(Lista, Nvalori),
     Nvalori >= 1,
     member(X, Lista).

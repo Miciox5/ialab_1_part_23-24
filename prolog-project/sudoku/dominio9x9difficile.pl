@@ -24,7 +24,8 @@ vuota(pos(1,9),0).
 % Seconda riga
 piena(pos(2,1),1).
 vuota(pos(2,2),0).
-vuota(pos(2,3),0).
+piena(pos(2,3),9).
+%vuota(pos(2,3),0).
 vuota(pos(2,4),0).
 vuota(pos(2,5),0).
 vuota(pos(2,6),0).
@@ -156,7 +157,7 @@ finale:-
         
         % Seconda riga
         vuota(pos(2,2),6),
-        vuota(pos(2,3),9),
+        %vuota(pos(2,3),9),
         vuota(pos(2,4),3),
         vuota(pos(2,5),4),
         vuota(pos(2,6),8),
