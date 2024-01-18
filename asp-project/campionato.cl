@@ -10,32 +10,58 @@ in(s2,c2).
 in(s3,c3).
 in(s4,c4).
 
-giornata(1..3).
+giornataAndata(1..3).
+giornataRitorno(4..6).
 
 
 
 % Constraints
 % --------------------------------------
 
-% Ad ogni giornata vengono assegnate due partite per coppia di squadre
-2 {partita(S1,S2,Giornata): 
-    team(S1),team(S2),S1<>S2} 2 :- giornata(Giornata).
+% Ad ogni giornata di andata vengono assegnate due partite per coppia di squadre
+2 {partita(S1,S2,GAndata): 
+    team(S1),team(S2),S1<>S2} 2 :- giornataAndata(GAndata).
 
-% Non si può giocare andata e ritorno nella stessa giornata
-:- partita(S1,S2,G),partita(S2,S1,G).
+% Ad ogni giornata di ritorno vengono assegnate due partite per coppia di squadre
+2 {partita(S1,S2,GRitorno): 
+    team(S1),team(S2),S1<>S2} 2 :- giornataRitorno(GRitorno).
+
+
+% Non si può giocare andata e ritorno nella stessa giornata di andata
+:- partita(S1,S2,GAndata),partita(S2,S1,GAndata),giornataAndata(GAndata).
+
+% Non si può giocare andata e ritorno nella stessa giornata di ritorno
+:- partita(S1,S2,GRitorno),partita(S2,S1,GRitorno),giornataRitorno(GRitorno).
 
 
 %% Una squadra non può giocare più di una partita nella stessa giornata
 % Una squadra non può giocare più di due partite in casa 
-:- partita(S1,S2,G),partita(S1,S3,G),S2<>S3.
+:- partita(S1,S2,GAndata),partita(S1,S3,GAndata),S2<>S3,giornataAndata(GAndata).
 % Una squadra non può giocare una partita in casa ed una fuori casa
-:- partita(S1,S2,G),partita(S3,S1,G),S2<>S3.
+:- partita(S1,S2,GAndata),partita(S3,S1,GAndata),S2<>S3,giornataAndata(GAndata).
 % Una squadra non può giocare due partite fuori casa
-:- partita(S1,S2,G),partita(S3,S2,G),S1<>S3.
+:- partita(S1,S2,GAndata),partita(S3,S2,GAndata),S1<>S3,giornataAndata(GAndata).
+
+%% Una squadra non può giocare più di una partita nella stessa giornata
+% Una squadra non può giocare più di due partite in casa 
+:- partita(S1,S2,GRitorno),partita(S1,S3,GRitorno),S2<>S3,giornataRitorno(GRitorno).
+% Una squadra non può giocare una partita in casa ed una fuori casa
+:- partita(S1,S2,GRitorno),partita(S3,S1,GRitorno),S2<>S3,giornataRitorno(GRitorno).
+% Una squadra non può giocare due partite fuori casa
+:- partita(S1,S2,GRitorno),partita(S3,S2,GRitorno),S1<>S3,giornataRitorno(GRitorno).
+
 
 % Non possono esistere due partite uguali in giornate diverse
-:- partita(S1,S2,G1),partita(S1,S2,G2),G1<>G2.
-:- partita(S1,S2,G1),partita(S2,S1,G2),G1<>G2.
+:- partita(S1,S2,G1Andata),partita(S1,S2,G2Andata),G1Andata<>G2Andata,
+    giornataAndata(G1Andata),giornataAndata(G2Andata).
+:- partita(S1,S2,G1Andata),partita(S2,S1,G2Andata),G1Andata<>G2Andata,
+    giornataAndata(G1Andata),giornataAndata(G2Andata).
+
+% Non possono esistere due partite uguali in giornate diverse
+:- partita(S1,S2,G1Ritorno),partita(S1,S2,G2Ritorno),G1Ritorno<>G2Ritorno,
+    giornataRitorno(G1Ritorno),giornataRitorno(G2Ritorno).
+:- partita(S1,S2,G1Ritorno),partita(S2,S1,G2Ritorno),G1Ritorno<>G2Ritorno,
+    giornataRitorno(G1Ritorno),giornataRitorno(G2Ritorno).
 
 
 #show partita/3.
