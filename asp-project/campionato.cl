@@ -1,29 +1,48 @@
 % Ground
 % --------------------------------------
 % team(atalanta;bologna;cagliari;empoli;fiorentina;frosinone;genoa;hellas_verona;inter;juventus;lazio;lecce;milan;monza;napoli;roma;salernitana;sassuolo;torino;udinese).
-team(s1;s2;s3;s4).
+team(s1;s2;s3;s4;s5;s6;s7;s8;s9;s10;
+        s11;s12;s13;s14;s15;s16;s17;s18;s19;s20).
 % citta(bergamo;bologna;cagliari;empoli;firenze;frosinone;genova;verona;milano;torino;lecce;monza;napoli;roma;salerno;reggio_emilia;udine).
-citta(c1;c2;c3;c4).
+citta(c1;c2;c4;c5;c6;c7;c8;c9;c10;
+        c11;c12;c13;c14;c15;c16;c17;c18;c19;c20;).
 
 giocaA(s1,c1;
         s2,c2;
         s3,c2;
-        s4,c4).
+        s4,c4;
+        s5,c5;
+        s6,c6;
+        s7,c7;
+        s8,c8;
+        s9,c9;
+        s10,c10;
+        s11,c11;
+        s12,c12;
+        s13,c13;
+        s14,c14;
+        s15,c15;
+        s16,c16;
+        s17,c17;
+        s18,c18;
+        s19,c19;
+        s20,c20
+        ).
 
-giornataAndata(1..3).
-giornataRitorno(4..6).
+giornataAndata(1..19).
+giornataRitorno(20..38).
 
 
 % Constraints
 % --------------------------------------
 
 % Ad ogni giornata di andata vengono assegnate due partite per coppia di squadre
-2 {partitaAndata(S1,S2,GAndata,giocaA(S1,C1)): 
-    team(S1),team(S2),S1<>S2,citta(C1)} 2 :- giornataAndata(GAndata).
+10 {partitaAndata(S1,S2,GAndata,giocaA(S1,C1)): 
+    team(S1),team(S2),S1<>S2,citta(C1)} 10 :- giornataAndata(GAndata).
 
 % Ad ogni giornata di ritorno vengono assegnate due partite per coppia di squadre
-2 {partitaRitorno(S1,S2,GRitorno,giocaA(S1,C1)): 
-    team(S1),team(S2),S1<>S2,citta(C1)} 2 :- giornataRitorno(GRitorno).
+10 {partitaRitorno(S1,S2,GRitorno,giocaA(S1,C1)): 
+    team(S1),team(S2),S1<>S2,citta(C1)} 10 :- giornataRitorno(GRitorno).
 
 
 % Non si può giocare andata e ritorno nella stessa giornata di andata
@@ -87,13 +106,14 @@ giornataRitorno(4..6).
 %---- Vincoli facoltativi ----
 
 % Ciascuna squadra non deve giocare ma più di due partite consecutive in casa
-% :- partitaAndata(S1, S2, GAndata, giocaA(S1, C1)),
-%    partitaAndata(S1, S3, GAndata1, giocaA(S1, C1)),
-%    S2 <> S3,
-%    giornataAndata(GAndata),giornataAndata(GAndata1),
-%    GAndata = GAndata1 + 1.
 
+:-partitaAndata(S1,_,G,_),
+    partitaAndata(S1,_,G+1,_),
+    partitaAndata(S1,_,G+2,_).
 
+:-partitaAndata(_,S1,G,_),
+    partitaAndata(_,S1,G+1,_),
+    partitaAndata(_,S1,G+2,_).
 
 % Ciascuna squadra non deve giocare ma più di due partite consecutive fuori casa
 
