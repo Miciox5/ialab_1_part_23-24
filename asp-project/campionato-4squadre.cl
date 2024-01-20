@@ -108,7 +108,7 @@ giornataRitorno(4..6).
 
 % La distanza tra una coppia di gare di andata e ritorno è di almeno 3 giornate
 
-:- partitaAndata(S1, S2, G1, _),partitaRitorno(S2, S1, G2, _), G2<G1+3.
+:- partitaAndata(S1, S2, G1, _),partitaRitorno(S2, S1, G2, _), G2<G1+2.
 
 #show partitaAndata/4.
 #show partitaRitorno/4.
