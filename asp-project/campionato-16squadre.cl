@@ -1,23 +1,13 @@
 % Ground
 % --------------------------------------
 
-%% Dominio con 4 squadre
+%% Dominio con 10 squadre
 % -------------------
-% team(s1;s2;s3;s4).
-% citta(c1;c2;c4).
+team(s1;s2;s3;s4;s5;s6;s7;s8;
+        s9;s10;s11;s12;s13;s14;s15;s16).
 
-% giocaA(s1,c1;
-%         s2,c2;
-%         s3,c2;
-%         s4,c4).
-
-% giornataAndata(1..3).
-% giornataRitorno(4..6).
-
-%% Dominio con 8 squadre
-% -------------------
-team(s1;s2;s3;s4;s5;s6;s7;s8).
-citta(c1;c2;c4;c5;c6;c7;c8).
+citta(c1;c2;c4;c5;c6;c7;c8;
+        c9;c10;c11;c12;c13;c14;c15;c16).
 
 giocaA(s1,c1;
         s2,c2;
@@ -26,36 +16,33 @@ giocaA(s1,c1;
         s5,c5;
         s6,c6;
         s7,c7;
-        s8,c8).
+        s8,c8;
+        s9,c9;
+        s10,c10;
+        s11,c11;
+        s12,c12;
+        s13,c13;
+        s14,c14;
+        s15,c15;
+        s16,c16).
 
-giornataAndata(1..7).
-giornataRitorno(8..14).
+giornataAndata(1..15).
+giornataRitorno(16..30).
 
 % Constraints
 % --------------------------------------
 
-%% Dominio 4 squadre
-% -------------------
-% % Ad ogni giornata di andata vengono assegnate due partite per coppia di squadre
-% 2 {partitaAndata(S1,S2,GAndata,giocaA(S1,C1)): 
-%     team(S1),team(S2),S1<>S2,citta(C1)} 2 :- giornataAndata(GAndata).
-
-% % Ad ogni giornata di ritorno vengono assegnate due partite per coppia di squadre
-% 2 {partitaRitorno(S1,S2,GRitorno,giocaA(S1,C1)): 
-%     team(S1),team(S2),S1<>S2,citta(C1)} 2 :- giornataRitorno(GRitorno).
-
-%% Dominio 8 squadre
+%% Dominio 16 squadre
 % -------------------
 % Ad ogni giornata di andata vengono assegnate due partite per coppia di squadre
-4 {partitaAndata(S1,S2,GAndata,giocaA(S1,C1)): 
-    team(S1),team(S2),S1<>S2,citta(C1)} 4 :- giornataAndata(GAndata).
+8 {partitaAndata(S1,S2,GAndata,giocaA(S1,C1)): 
+    team(S1),team(S2),S1<>S2,citta(C1)} 8 :- giornataAndata(GAndata).
 
 % Ad ogni giornata di ritorno vengono assegnate due partite per coppia di squadre
-4 {partitaRitorno(S1,S2,GRitorno,giocaA(S1,C1)): 
-    team(S1),team(S2),S1<>S2,citta(C1)} 4 :- giornataRitorno(GRitorno).
+8 {partitaRitorno(S1,S2,GRitorno,giocaA(S1,C1)): 
+    team(S1),team(S2),S1<>S2,citta(C1)} 8 :- giornataRitorno(GRitorno).
 
 % -------------------
-
 % Non si può giocare andata e ritorno nella stessa giornata di andata
 :- partitaAndata(S1,S2,GAndata,giocaA(S1,C1)),partitaAndata(S2,S1,GAndata,giocaA(S2,C2)),giornataAndata(GAndata).
 
@@ -134,10 +121,10 @@ giornataRitorno(8..14).
     partitaRitorno(_,S1,G+1,_),
     partitaRitorno(_,S1,G+2,_).
 
-% La distanza tra una coppia di gare di andata e ritorno è di almeno 10 giornate
+% La distanza tra una coppia di gare di andata e ritorno è di almeno 8 giornate
 
+:- partitaAndata(S1, S2, G1, _),partitaRitorno(S2, S1, G2, _), G2<G1+8.
 
-% #show partitaAndata/4.
+#show partitaAndata/4.
 #show partitaRitorno/4.
-% #show giocaA/2.
 
