@@ -121,6 +121,22 @@ giornataRitorno(16..30).
     partitaRitorno(_,S1,G+1,_),
     partitaRitorno(_,S1,G+2,_).
 
+:-partitaAndata(S1,_,G,_),
+    partitaAndata(S1,_,G+1,_),
+    partitaRitorno(S1,_,G+2,_).
+
+:-partitaAndata(_,S1,G,_),
+    partitaAndata(_,S1,G+1,_),
+    partitaRitorno(_,S1,G+2,_).
+
+:-partitaAndata(S1,_,G,_),
+    partitaRitorno(S1,_,G+1,_),
+    partitaRitorno(S1,_,G+2,_).
+
+:-partitaAndata(_,S1,G,_),
+    partitaRitorno(_,S1,G+1,_),
+    partitaRitorno(_,S1,G+2,_).
+
 % La distanza tra una coppia di gare di andata e ritorno è di almeno 8 giornate
 
 :- partitaAndata(S1, S2, G1, _),partitaRitorno(S2, S1, G2, _), G2<G1+8.
