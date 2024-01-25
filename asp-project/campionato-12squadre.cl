@@ -30,11 +30,11 @@ giornataRitorno(12..22).
 
 %% Dominio 10 squadre
 % -------------------
-% Ad ogni giornata di andata vengono assegnate due partite per coppia di squadre
+% Ad ogni giornata di andata vengono assegnate sei partite per coppia di squadre
 6 {partitaAndata(S1,S2,GAndata,giocaA(S1,C1)): 
     team(S1),team(S2),S1<>S2,citta(C1)} 6 :- giornataAndata(GAndata).
 
-% Ad ogni giornata di ritorno vengono assegnate due partite per coppia di squadre
+% Ad ogni giornata di ritorno vengono assegnate sei partite per coppia di squadre
 6 {partitaRitorno(S1,S2,GRitorno,giocaA(S1,C1)): 
     team(S1),team(S2),S1<>S2,citta(C1)} 6 :- giornataRitorno(GRitorno).
 
@@ -135,7 +135,7 @@ giornataRitorno(12..22).
     partitaRitorno(_,S1,G+2,_).
 
 
-% La distanza tra una coppia di gare di andata e ritorno è di almeno 7 giornate
+% La distanza tra una coppia di gare di andata e ritorno è di almeno 6 giornate
 
 :- partitaAndata(S1, S2, G1, _),partitaRitorno(S2, S1, G2, _), G2<G1+6.
 
