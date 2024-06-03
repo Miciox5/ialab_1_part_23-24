@@ -12,14 +12,20 @@ applicabile(assegna(X),pos(Riga,Colonna)):-
     nth1(1, Lista, X).
 
 % Forza bruta    
-applicabile(assegna(X),pos(Riga,Colonna)):-
-    vuota(pos(Riga,Colonna),ValoreAsserito),
-    retract(vuota(pos(Riga,Colonna),ValoreAsserito)),
-    assert(vuota(pos(Riga,Colonna),0)),
-    listaPossibili(pos(Riga,Colonna),Lista),
-    length(Lista, Nvalori),
-    Nvalori > 1,
-    member(X, Lista).
+% applicabile(assegna(X),pos(Riga,Colonna)):-
+%     vuota(pos(Riga,Colonna),ValoreAsserito),
+%     retract(vuota(pos(Riga,Colonna),ValoreAsserito)),
+%     assert(vuota(pos(Riga,Colonna),0)),
+%     listaPossibili(pos(Riga,Colonna),Lista),
+%     length(Lista, Nvalori),
+%     Nvalori > 1,
+%     member(X, Lista).
+
+applicabile(scorriRiga,pos(Riga,Colonna)):- %se non c'è il songolo scorro la riga anche se rimane la cella vuota
+    vuota(pos(Riga,Colonna),Valore),
+    valoreMax(MaxColonne),
+    NuovaColonna is Colonna+1,
+    NuovaColonna =< MaxColonne,!.
 
 applicabile(scorriRiga,pos(Riga,Colonna)):-
     piena(pos(Riga,Colonna),Valore),
@@ -27,11 +33,22 @@ applicabile(scorriRiga,pos(Riga,Colonna)):-
     NuovaColonna is Colonna+1,
     NuovaColonna =< MaxColonne,!.
 
+applicabile(cambiaRiga,pos(Riga,Colonna)):- %se non c'è il singolo e devo cambiare riga anche se rimane cela vuota
+    vuota(pos(Riga,Colonna),Valore),
+    valoreMax(MaxRighe),
+    NuovaRiga is Riga+1,
+    NuovaRiga =< MaxRighe.
+
 applicabile(cambiaRiga,pos(Riga,Colonna)):-
     piena(pos(Riga,Colonna),Valore),
     valoreMax(MaxRighe),
     NuovaRiga is Riga+1,
     NuovaRiga =< MaxRighe.
+
+applicabile(ricomincia,pos(Riga,Colonna)):- %se arrivo in 4,4 rinizio da 1,1
+    valoreMax(Max),
+    Riga==Max,
+    Colonna==Max.
 
 %AUSILIARI
 
@@ -122,4 +139,8 @@ trasforma(scorriRiga,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
 
 trasforma(cambiaRiga,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
     NuovaRiga is Riga+1,
+    NuovaColonna is 1.
+
+trasforma(ricomincia,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
+    NuovaRiga is 1,
     NuovaColonna is 1.
