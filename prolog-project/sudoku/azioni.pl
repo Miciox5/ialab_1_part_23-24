@@ -23,6 +23,7 @@ applicabile(assegna(X), pos(Riga, Colonna)) :-
 
 applicabile(assegna(X), pos(Riga, Colonna)) :-
     vuota(pos(Riga, Colonna), ValoreAsserito),
+    ValoreAsserito \= 0,
     retract(vuota(pos(Riga, Colonna), ValoreAsserito)),
     assert(vuota(pos(Riga, Colonna), 0)),
     listaPossibili(pos(Riga, Colonna), Lista),
@@ -36,7 +37,7 @@ applicabile(scorriRiga,pos(Riga,Colonna)):-
     piena(pos(Riga,Colonna),Valore),
     valoreMax(MaxColonne),
     NuovaColonna is Colonna+1,
-    NuovaColonna =< MaxColonne,!.
+    NuovaColonna =< MaxColonne.
 
 applicabile(cambiaRiga,pos(Riga,Colonna)):-
     piena(pos(Riga,Colonna),Valore),
@@ -79,7 +80,7 @@ possibiliGriglia(pos(Riga,Colonna),ListaPoxGriglia):-
 
 trovaGriglia(Posizione, NumeroGriglia) :-
     griglia(NumeroGriglia,ListaPosizioni),
-    member(Posizione, ListaPosizioni),!.
+    member(Posizione, ListaPosizioni),!. % evita di fare controlli con altre griglie quando ne trovo una(tanto so che è l'unica)
     % clause(griglia(NumeroGriglia, ListaPosizioni), true).
 
 % Aggiunti CUT, altrimenti andava su altre strade.
