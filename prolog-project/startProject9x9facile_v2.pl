@@ -3,7 +3,7 @@
 
 main :-
     consult('sudoku/dominio9x9facile.pl'),
-    consult('sudoku/azioni.pl'),
+    consult('sudoku/azioni_v2.pl'),
     consult('sudoku/strategia.pl'),
     write('File loaded. Ready to go!\n'),
     main_program.

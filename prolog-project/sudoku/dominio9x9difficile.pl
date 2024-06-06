@@ -5,6 +5,7 @@
 :- retractall(vuota(_, _)).  %per partire da uno stato pulito senza considerare i precedenti fatti asseriti
 
 valoreMax(9).
+sommaValoriCelle(405).
 
 listaPoxVal([1,2,3,4,5,6,7,8,9]).
 
@@ -145,76 +146,88 @@ griglia(9,[pos(7,7),pos(7,8),pos(7,9),
 
 %% PREDICATO DI USCITA: 
 
+% finale:-
+%         % Prima riga
+%         vuota(pos(1,2),2),
+%         vuota(pos(1,3),3),
+%         vuota(pos(1,4),5),
+%         vuota(pos(1,5),1),
+%         vuota(pos(1,6),7),
+%         vuota(pos(1,7),6),
+%         vuota(pos(1,9),8),
+        
+%         % Seconda riga
+%         vuota(pos(2,2),6),
+%         %vuota(pos(2,3),9),
+%         vuota(pos(2,4),3),
+%         vuota(pos(2,5),4),
+%         vuota(pos(2,6),8),
+%         vuota(pos(2,8),7),
+        
+%         % Terza riga
+%         vuota(pos(3,1),5),
+%         vuota(pos(3,2),8),
+%         vuota(pos(3,5),6),
+%         vuota(pos(3,7),3),
+%         vuota(pos(3,9),4),
+
+%         % Quarta riga
+%         vuota(pos(4,1),7),
+%         vuota(pos(4,2),4),
+%         vuota(pos(4,5),8),
+%         vuota(pos(4,7),1),
+%         vuota(pos(4,8),6),
+%         vuota(pos(4,9),9),
+        
+%         % Quinta riga
+%         vuota(pos(5,1),3),
+%         vuota(pos(5,2),1),
+%         vuota(pos(5,3),6),
+%         vuota(pos(5,4),4),
+%         vuota(pos(5,5),9),
+%         vuota(pos(5,6),5),
+%         vuota(pos(5,7),2),
+%         vuota(pos(5,9),7),
+        
+%         % Sesta riga
+%         vuota(pos(6,1),2),
+%         vuota(pos(6,3),8),
+%         vuota(pos(6,5),7),
+%         vuota(pos(6,6),6),
+%         vuota(pos(6,8),3),
+
+%         % Settima riga
+%         vuota(pos(7,3),1),
+%         vuota(pos(7,4),6),
+%         vuota(pos(7,5),5),
+%         vuota(pos(7,6),4),
+%         vuota(pos(7,7),9),
+%         vuota(pos(7,8),2),
+
+%         % Ottava riga
+%         vuota(pos(8,1),9),
+%         vuota(pos(8,2),5),
+%         vuota(pos(8,4),8),
+%         vuota(pos(8,5),3),
+%         vuota(pos(8,6),1),
+%         vuota(pos(8,8),4),
+%         vuota(pos(8,9),6),
+        
+%         % Nona riga
+%         vuota(pos(9,1),6),
+%         vuota(pos(9,3),4),
+%         vuota(pos(9,4),7),
+%         vuota(pos(9,5),2),
+%         vuota(pos(9,6),9).
+
+
 finale:-
-        % Prima riga
-        vuota(pos(1,2),2),
-        vuota(pos(1,3),3),
-        vuota(pos(1,4),5),
-        vuota(pos(1,5),1),
-        vuota(pos(1,6),7),
-        vuota(pos(1,7),6),
-        vuota(pos(1,9),8),
-        
-        % Seconda riga
-        vuota(pos(2,2),6),
-        %vuota(pos(2,3),9),
-        vuota(pos(2,4),3),
-        vuota(pos(2,5),4),
-        vuota(pos(2,6),8),
-        vuota(pos(2,8),7),
-        
-        % Terza riga
-        vuota(pos(3,1),5),
-        vuota(pos(3,2),8),
-        vuota(pos(3,5),6),
-        vuota(pos(3,7),3),
-        vuota(pos(3,9),4),
-
-        % Quarta riga
-        vuota(pos(4,1),7),
-        vuota(pos(4,2),4),
-        vuota(pos(4,5),8),
-        vuota(pos(4,7),1),
-        vuota(pos(4,8),6),
-        vuota(pos(4,9),9),
-        
-        % Quinta riga
-        vuota(pos(5,1),3),
-        vuota(pos(5,2),1),
-        vuota(pos(5,3),6),
-        vuota(pos(5,4),4),
-        vuota(pos(5,5),9),
-        vuota(pos(5,6),5),
-        vuota(pos(5,7),2),
-        vuota(pos(5,9),7),
-        
-        % Sesta riga
-        vuota(pos(6,1),2),
-        vuota(pos(6,3),8),
-        vuota(pos(6,5),7),
-        vuota(pos(6,6),6),
-        vuota(pos(6,8),3),
-
-        % Settima riga
-        vuota(pos(7,3),1),
-        vuota(pos(7,4),6),
-        vuota(pos(7,5),5),
-        vuota(pos(7,6),4),
-        vuota(pos(7,7),9),
-        vuota(pos(7,8),2),
-
-        % Ottava riga
-        vuota(pos(8,1),9),
-        vuota(pos(8,2),5),
-        vuota(pos(8,4),8),
-        vuota(pos(8,5),3),
-        vuota(pos(8,6),1),
-        vuota(pos(8,8),4),
-        vuota(pos(8,9),6),
-        
-        % Nona riga
-        vuota(pos(9,1),6),
-        vuota(pos(9,3),4),
-        vuota(pos(9,4),7),
-        vuota(pos(9,5),2),
-        vuota(pos(9,6),9).
+        findall(Valore, piena(pos(_,_),Valore); vuota(pos(_,_),Valore), ListaValoriP),
+        sommaLista(ListaValoriP,SommaP),
+        sommaValoriCelle(SVC),
+        SommaP is SVC.
+            
+sommaLista([],0).
+sommaLista([H|Tail],SommaN):-
+    sommaLista(Tail,Somma),
+    SommaN is Somma+H.

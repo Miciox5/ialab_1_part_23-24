@@ -5,6 +5,7 @@
 :- retractall(vuota(_, _)).  %per partire da uno stato pulito senza considerare i precedenti fatti asseriti
 
 valoreMax(4).
+sommaValoriCelle(40).
 
 listaPoxVal([1,2,3,4]).
 
@@ -45,17 +46,12 @@ griglia(4,[pos(3,3),pos(3,4),pos(4,3),pos(4,4)]).
 %% PREDICATO DI USCITA: 
 
 finale:-
-        vuota(pos(1,1),3),
+        findall(Valore, piena(pos(_,_),Valore); vuota(pos(_,_),Valore), ListaValoriP),
+        sommaLista(ListaValoriP,SommaP),
+        sommaValoriCelle(SVC),
+        SommaP is SVC.
 
-        % Seconda riga
-        vuota(pos(2,2),2),
-        vuota(pos(2,3),3),
-
-        % Terza riga
-        vuota(pos(3,2),4),
-        vuota(pos(3,3),1),
-
-        % Quarta riga
-        vuota(pos(4,2),3),
-        vuota(pos(4,3),4),
-        vuota(pos(4,4),2).
+sommaLista([],0).
+sommaLista([H|Tail],SommaN):-
+    sommaLista(Tail,Somma),
+    SommaN is Somma+H.

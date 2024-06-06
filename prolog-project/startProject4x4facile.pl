@@ -14,6 +14,7 @@ main_program :-
     % trace,
     statistics(runtime, [Start|_]),
     strategiaDiRicerca(Cammino),
+    write(Cammino),!,
     statistics(runtime, [End|_]),
     % Debug: print start and end times
     format('Start time: ~w ms~n', [Start]),

@@ -13,11 +13,12 @@ main_program :-
     % trace,
     statistics(runtime, [Start|_]),
     strategiaDiRicerca(Cammino),
+    write(Cammino),!,
     statistics(runtime, [End|_]),
     % Debug: print start and end times
     format('Start time: ~w ms~n', [Start]),
     format('End time: ~w ms~n', [End]),
     Time is (End - Start) / 1000,
-    format('Time taken: ~3f seconds~n', [Time]).
+    format('Time taken: ~3f seconds~n', [Time]),!.
     % nodebug,
     % halt 

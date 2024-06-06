@@ -1,43 +1,47 @@
 
 %APPLICABILE
 
+% Controlla se la casella è vuota e 
 applicabile(assegna(X), pos(Riga, Colonna)) :-
-    vuota(pos(Riga, Colonna), ValoreAsserito),
-    ( ValoreAsserito \= 0 ->
-        retract(vuota(pos(Riga, Colonna), ValoreAsserito)),
-        assert(vuota(pos(Riga, Colonna), 0))
-    ; % Altrimenti, prosegui senza retract
-        true
-    ),
+    vuota(pos(Riga, Colonna), 0),!,
     listaPossibili(pos(Riga, Colonna), Lista),
     length(Lista, Nvalori),
     Nvalori >= 1,
     member(X, Lista).
 
+applicabile(assegna(X), pos(Riga, Colonna)) :-
+    vuota(pos(Riga, Colonna), ValoreAsserito),
+    ValoreAsserito \= 0,!,
+    retract(vuota(pos(Riga, Colonna), ValoreAsserito)),
+    assert(vuota(pos(Riga, Colonna), 0)),
+    listaPossibili(pos(Riga, Colonna), Lista),
+    length(Lista, Nvalori),
+    Nvalori >= 1,
+    member(X, Lista).
 
 applicabile(scorriRiga,pos(Riga,Colonna)):-
-    piena(pos(Riga,Colonna),Valore),
+    piena(pos(Riga,Colonna),_),
     valoreMax(MaxColonne),
     NuovaColonna is Colonna+1,
     NuovaColonna =< MaxColonne,!.
 
 applicabile(cambiaRiga,pos(Riga,Colonna)):-
-    piena(pos(Riga,Colonna),Valore),
+    piena(pos(Riga,Colonna),_),
     valoreMax(MaxRighe),
     NuovaRiga is Riga+1,
-    NuovaRiga =< MaxRighe,!.
+    NuovaRiga =< MaxRighe.
 
 %AUSILIARI
 listaPossibili(pos(Riga,Colonna),Lista):-
     possibiliRiga(Riga,ListaPoxValRiga),
     possibiliColonna(Colonna,ListaPoxColonna),
     possibiliGriglia(pos(Riga,Colonna),ListaPoxGriglia),
-    % write(ListaPoxValRiga),
-    % write(ListaPoxColonna),
-    % write(ListaPoxGriglia),
+    %write(ListaPoxValRiga),
+    %write(ListaPoxColonna),
+    %write(ListaPoxGriglia),
     intersection(ListaPoxValRiga, ListaPoxColonna, TempIntersezione),
     intersection(TempIntersezione, ListaPoxGriglia, Lista).
-    % write(Lista).
+    %write(Lista).
     
 
 possibiliRiga(Riga,ListaPoxValRiga):-
@@ -45,24 +49,24 @@ possibiliRiga(Riga,ListaPoxValRiga):-
     findall(Valore, vuota(pos(Riga, _), Valore), ValoriVuoteR),
     append(ValoriPieneR, ValoriVuoteR, ListaRiga),
     listaPoxVal(L),
-    subtract(L, ListaRiga, ListaPoxValRiga),!.
+    subtract(L, ListaRiga, ListaPoxValRiga).
 
 possibiliColonna(Colonna,ListaPoxColonna):-
     findall(Valore, piena(pos(_, Colonna), Valore), ValoriPieneC),
     findall(Valore, vuota(pos(_, Colonna), Valore), ValoriVuoteC),
     append(ValoriPieneC, ValoriVuoteC, ListaColonna),
     listaPoxVal(L),
-    subtract(L, ListaColonna, ListaPoxColonna),!.
+    subtract(L, ListaColonna, ListaPoxColonna).
 
 possibiliGriglia(pos(Riga,Colonna),ListaPoxGriglia):-
     trovaGriglia(pos(Riga,Colonna), NumeroGriglia),
     trovaNumeriGriglia(NumeroGriglia, ValoriInGriglia),
     listaPoxVal(L),
-    subtract(L, ValoriInGriglia, ListaPoxGriglia),!.
+    subtract(L, ValoriInGriglia, ListaPoxGriglia).
 
 trovaGriglia(Posizione, NumeroGriglia) :-
     griglia(NumeroGriglia,ListaPosizioni),
-    member(Posizione, ListaPosizioni),!. % evita di fare controlli con altre griglie quando ne trovo una(tanto so che è l'unica)
+    member(Posizione, ListaPosizioni),!.
     % clause(griglia(NumeroGriglia, ListaPosizioni), true).
 
 % Aggiunti CUT, altrimenti andava su altre strade.
@@ -78,42 +82,33 @@ prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
     append(Valori, RestoValoriInGriglia, ValoriInGriglia),
     prendiValoriInGriglia(RestoPosizioni, RestoValoriInGriglia).
 
-
-
 %TRASFORMA
 
+% if:
 trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
-    write("qui"),
-    (
-        % Se esiste un fatto vuota(pos(Riga, Colonna), _)
-        clause(vuota(pos(Riga, Colonna), _), _) -> 
-        retract(vuota(pos(Riga, Colonna), ValoreAsserito))        ;
-        % Altrimenti, prosegui senza retract
-        true
-    ),
+    % Se esiste un fatto vuota(pos(Riga, Colonna), _)
+    vuota(pos(Riga, Colonna), _), 
+    retract(vuota(pos(Riga, Colonna), _)),
     assert(vuota(pos(Riga, Colonna), ValoreDaAssegnare)),
-    NuovaColonna is Colonna + 1,
-    valoreMax(MaxNColonne),
-    NuovaColonna =< MaxNColonne,!.
-
-trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
-    write("qui"),
-    (
-        % Se esiste un fatto vuota(pos(Riga, Colonna), _)
-        clause(vuota(pos(Riga, Colonna), _), _) -> 
-        retract(vuota(pos(Riga, Colonna), ValoreAsserito))        ;
-        % Altrimenti, prosegui senza retract
-        true
-    ),
-    assert(vuota(pos(Riga, Colonna), ValoreDaAssegnare)),
+    valoreMax(Max),
+	NuovaColonna is Colonna+1,
+    NuovaColonna =< Max.
+% else:
+trasforma(assegna(_),pos(Riga,_),pos(NuovaRiga,NuovaColonna)):-
+    % Se non esiste un fatto vuota(pos(Riga, Colonna), _)
     NuovaColonna is 1,
-    NuovaRiga is Riga +1.
+    NuovaRiga is Riga+1.
     
-
-
 trasforma(scorriRiga,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
     NuovaColonna is Colonna+1.
 
-trasforma(cambiaRiga,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
+trasforma(cambiaRiga,pos(Riga,_),pos(NuovaRiga,NuovaColonna)):-
     NuovaRiga is Riga+1,
     NuovaColonna is 1.
+
+trasforma(ricomincia,pos(_,Colonna),pos(NuovaRiga,NuovaColonna)):-
+	valoreMax(Max),
+    Colonna > Max,
+   	NuovaRiga is 1,
+    NuovaColonna is 1.
+

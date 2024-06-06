@@ -2,9 +2,9 @@
 :- initialization(main, main).
 
 main :-
-    consult('sudoku/dominio9x9facile.pl'),
-    consult('sudoku/azioni.pl'),
-    consult('sudoku/strategia.pl'),
+    consult("sudoku/dominio4x4facile.pl"),
+    consult("sudoku/azioni_v2.pl"),
+    consult("sudoku/strategia.pl"),
     write('File loaded. Ready to go!\n'),
     main_program.
 
@@ -19,6 +19,8 @@ main_program :-
     format('Start time: ~w ms~n', [Start]),
     format('End time: ~w ms~n', [End]),
     Time is (End - Start) / 1000,
-    format('Time taken: ~3f seconds~n', [Time]),!.
+    format('Time taken: ~3f seconds~n', [Time]).
     % nodebug,
     % halt 
+
+
