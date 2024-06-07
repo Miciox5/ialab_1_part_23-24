@@ -1,4 +1,4 @@
-% DOMINIO SUDOKU 4x4
+% DOMINIO SUDOKU 9x9 facile
 :- discontiguous vuota/2.
 :- discontiguous piena/2.
 :- dynamic vuota/2.

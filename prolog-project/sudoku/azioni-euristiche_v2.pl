@@ -1,32 +1,47 @@
 %APPLICABILE
 
-% Applica un assegnamento e prosegue nella ricerca in profondità 
-applicabile(assegna(X), pos(Riga, Colonna)) :-
-    vuota(pos(Riga, Colonna), ValoreAsserito),
-    ( ValoreAsserito \= 0 ->
-        retract(vuota(pos(Riga, Colonna), ValoreAsserito)),
-        assert(vuota(pos(Riga, Colonna), 0))
-    ; % Altrimenti, prosegui senza retract
-        true
-    ),
-    listaPossibili(pos(Riga, Colonna), Lista),
+% Euristica: singoli ovvi. A differenza di prima, applica l'azione solo se
+%   la cella vuota ha solo un valore possibile
+applicabile(assegna(X),pos(Riga,Colonna)):-
+    vuota(pos(Riga,Colonna),0),
+    listaPossibili(pos(Riga,Colonna),Lista),
     length(Lista, Nvalori),
-    Nvalori >= 1,
-    member(X, Lista).
+    Nvalori == 1,
+    nth1(1, Lista, X),!.
 
-% Scorre la riga se trova la cella piena
-applicabile(scorriRiga,pos(Riga,Colonna)):-
+% Se fallisce l'assegnamento precedente (se non c'è il singolo) 
+%   scorro la riga anche se rimane la cella vuota 
+applicabile(scorriRiga,pos(Riga,Colonna)):- 
+    vuota(pos(Riga,Colonna),_),
+    valoreMax(MaxColonne),
+    NuovaColonna is Colonna+1,
+    NuovaColonna =< MaxColonne,!.
+
+% Se non c'è il singolo, scorro la riga anche se rimane la cella vuota 
+applicabile(scorriRiga,pos(Riga,Colonna)):- %
     piena(pos(Riga,Colonna),_),
     valoreMax(MaxColonne),
     NuovaColonna is Colonna+1,
     NuovaColonna =< MaxColonne,!.
 
-% Scorre la colonna se trova la cella piena ed è a fine riga
-applicabile(cambiaRiga,pos(Riga,Colonna)):-
+% Se non c'è il singolo e devo cambiare riga anche se rimane cela vuota
+applicabile(cambiaRiga,pos(Riga,Colonna)):- 
+    vuota(pos(Riga,Colonna),_),
+    valoreMax(MaxRighe),
+    NuovaRiga is Riga+1,
+    NuovaRiga =< MaxRighe,!.
+
+% Se non c'è il singolo e devo cambiare riga anche se rimane cela vuota
+applicabile(cambiaRiga,pos(Riga,Colonna)):- 
     piena(pos(Riga,Colonna),_),
     valoreMax(MaxRighe),
     NuovaRiga is Riga+1,
     NuovaRiga =< MaxRighe,!.
+
+% se arriva al fondo, ricomincia la ricerca
+applicabile(ricomincia,pos(Riga,_)):- 
+    valoreMax(Max),
+    Riga>=Max,!.
 
 %AUSILIARI
 
@@ -64,7 +79,7 @@ possibiliGriglia(pos(Riga,Colonna),ListaPoxGriglia):-
 % Ritorna la griglia di Posizione
 trovaGriglia(Posizione, NumeroGriglia) :-
     griglia(NumeroGriglia,ListaPosizioni),
-    member(Posizione, ListaPosizioni),!. % evita di fare controlli con altre griglie quando ne trovo una(tanto so che è l'unica)
+    member(Posizione, ListaPosizioni),!.
 
 % Ritorna i valori delle celle della griglia n=NumeroGriglia
 trovaNumeriGriglia(NumeroGriglia, ValoriInGriglia):-
@@ -84,37 +99,31 @@ prendiValoriInGriglia([Posizione|RestoPosizioni], ValoriInGriglia):-
 
 % If: Applica l'assegnamento effettivo sulla cella vuota 
 trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
-    (
-        % Se esiste un fatto vuota(pos(Riga, Colonna), _)
-        clause(vuota(pos(Riga, Colonna), _), _) -> 
-        retract(vuota(pos(Riga, Colonna), _))        ;
-        % Altrimenti, prosegui senza retract
-        true
-    ),
+    % Se esiste un fatto vuota(pos(Riga, Colonna), _)
+    vuota(pos(Riga, Colonna), _), 
+    retract(vuota(pos(Riga, Colonna), _)),
     assert(vuota(pos(Riga, Colonna), ValoreDaAssegnare)),
-    NuovaColonna is Colonna + 1,
-    valoreMax(MaxNColonne),
-    NuovaColonna =< MaxNColonne,!.
+    valoreMax(Max),
+    NuovaColonna is Colonna+1,
+    NuovaColonna =< Max.
 
 % else: Prosegue senza applicare l'assegnamento (caso di fallimento)
-trasforma(assegna(ValoreDaAssegnare),pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
-    % write("qui"),
-    (
-        % Se esiste un fatto vuota(pos(Riga, Colonna), _)
-        clause(vuota(pos(Riga, Colonna), _), _) -> 
-        retract(vuota(pos(Riga, Colonna), _))        ;
-        % Altrimenti, prosegui senza retract
-        true
-    ),
-    assert(vuota(pos(Riga, Colonna), ValoreDaAssegnare)),
+trasforma(assegna(_),pos(Riga,_),pos(NuovaRiga,NuovaColonna)):-
+    % Se non esiste un fatto vuota(pos(Riga, Colonna), _)
     NuovaColonna is 1,
-    NuovaRiga is Riga +1.
+    NuovaRiga is Riga+1,!.
     
 % Scorre l'esecuzione sulla prossima cella in riga
 trasforma(scorriRiga,pos(Riga,Colonna),pos(Riga,NuovaColonna)):-
-    NuovaColonna is Colonna+1.
+    NuovaColonna is Colonna+1,!.
 
 % Scorre l'esecuzione sulla prossima cella in colonna
-trasforma(cambiaRiga,pos(Riga,Colonna),pos(NuovaRiga,NuovaColonna)):-
+trasforma(cambiaRiga,pos(Riga,_),pos(NuovaRiga,NuovaColonna)):-
     NuovaRiga is Riga+1,
-    NuovaColonna is 1.
+    NuovaColonna is 1,!.
+
+% Ricomincia l'esecuzione se arriva al fondo
+trasforma(ricomincia,pos(_,Colonna),pos(NuovaRiga,NuovaColonna)):-
+    NuovaRiga is 1,
+    NuovaColonna is 1,!.
+

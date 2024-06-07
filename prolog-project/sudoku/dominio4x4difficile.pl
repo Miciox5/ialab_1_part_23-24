@@ -1,4 +1,4 @@
-% DOMINIO SUDOKU 4x4
+% DOMINIO SUDOKU 4x4 difficile
 :- discontiguous vuota/2.
 :- discontiguous piena/2.
 :- dynamic vuota/2.
