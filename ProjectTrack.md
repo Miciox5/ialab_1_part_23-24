@@ -2,7 +2,7 @@
 # Progetto d’esame per la parte programmazione logica/ASP
 (docente: Gian Luca Pozzato)
 
-E’ richiesta la realizzazione di un progetto (sviluppato anche in gruppo) che comprende le due attività seguenti descritte nel seguito. Oltre all’implementazione degli esercizi è necessario predisporre una breve presentazione (di circa 10 minuti) accompagnata da slides per la presentazione delle implementazioni realizzate, mettendo in evidenza le scelte di progetto più significative e l’analisi critica dei risultati sperimentali ottenuti con opportune prove. 
+E’ richiesta la realizzazione di un progetto (sviluppato anche in gruppo) che comprende le due attività seguenti descritte nel seguito. Oltre all’implementazione degli esercizi è necessario predisporre una breve presentazione (di circa 10 minuti) accompagnata da slides per la presentazione delle implementazioni realizzate, mettendo in evidenza le scelte di progetto più significative e l’analisi critica dei risultati sperimentali ottenuti con opportune prove.
 
 ## ATTIVITÀ 1: PROLOG
 Si richiede di implementare un sistema intelligente in grado di risolvere un problema a scelta in un dominio a scelta (anche “giocattolo”), ad eccezione del labirinto con una sola uscita. Sono esempi (ma la scelta NON è da considerarsi limitata ad essi) il mondo dei blocchi, il gioco del 15 (sliding block puzzle), il labirinto con più uscite, il percorso della metropolitana. Si richiede di implementare in Prolog una strategia di ricerca informata (con euristica) nello spazio degli stati. In linea con quanto visto a lezione, è richiesto che il sistema sia composto da almeno tre file:
