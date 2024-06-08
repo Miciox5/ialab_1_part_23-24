@@ -17,6 +17,7 @@ simmetriche, ossia la giornata 1 di ritorno non coincide necessariamente con la 
 - ogni squadra fa riferimento ad una città, che offre la struttura in cui la squadra gioca gli incontri in casa;
 - ogni squadra affronta due volte tutte le altre squadre, una volta in casa e una volta fuori casa, ossia una volta nella propria città di riferimento e una volta in quella dell’altra squadra;
 - Due delle 20 squadre fanno riferimento alla medesima città e condividono la stessa struttura di gioco, quindi non possono giocare entrambe in casa nella stessa giornata. Ovviamente, fanno eccezione le due giornate in cui giocano l’una contro l’altra (derby).
+---
 FACOLTATIVO: in aggiunta alle caratteristiche sopra indicate, da considerarsi obbligatorie, si richiede di considerare i seguenti vincoli ulteriori, che si potranno aggiungere (tutti o alcuni) a discrezione del gruppo nel caso non rendano privo di soluzione il problema:
 - ciascuna squadra non deve giocare mai più di due partite consecutive in casa o fuori casa;
 - la distanza tra una coppia di gare di andata e ritorno è di almeno 10 giornate, ossia se SquadraA vs SquadraB è programmata per la giornata 12, il ritorno SquadraB vs SquadraA verrà schedulato non prima dalla giornata 22.

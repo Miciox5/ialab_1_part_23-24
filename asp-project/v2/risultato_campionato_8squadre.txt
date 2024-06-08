@@ -1,0 +1,81 @@
+clingo-dl version 1.5.0
+Reading from campionato-8squadre_v2.cl
+Solving...
+Answer: 1
+
+partita(andata,juventus,atalanta,citta_torino_stadium,1) 
+partita(andata,lazio,inter,citta_lazio_roma,1) 
+partita(andata,milan,bologna,citta_milano,1) 
+partita(andata,napoli,roma,citta_napoli,1) 
+
+partita(andata,atalanta,milan,citta_bergamo,2) 
+partita(andata,bologna,napoli,citta_bologna,2) 
+partita(andata,inter,roma,citta_milano,2) 
+partita(andata,juventus,lazio,citta_torino_stadium,2) 
+
+partita(andata,bologna,atalanta,citta_bologna,3) 
+partita(andata,milan,lazio,citta_milano,3) 
+partita(andata,napoli,inter,citta_napoli,3) 
+partita(andata,roma,juventus,citta_roma,3) 
+
+partita(andata,atalanta,inter,citta_bergamo,4) 
+partita(andata,juventus,bologna,citta_torino_stadium,4) 
+partita(andata,lazio,roma,citta_lazio_roma,4) 
+partita(andata,milan,napoli,citta_milano,4) 
+
+partita(andata,bologna,lazio,citta_bologna,5) 
+partita(andata,inter,juventus,citta_milano,5) 
+partita(andata,napoli,atalanta,citta_napoli,5) 
+partita(andata,roma,milan,citta_roma,5) 
+
+partita(andata,bologna,roma,citta_bologna,6) 
+partita(andata,lazio,atalanta,citta_lazio_roma,6) 
+partita(andata,milan,inter,citta_milano,6) 
+partita(andata,napoli,juventus,citta_napoli,6) 
+
+partita(andata,atalanta,roma,citta_bergamo,7) 
+partita(andata,inter,bologna,citta_milano,7) 
+partita(andata,juventus,milan,citta_torino_stadium,7) 
+partita(andata,lazio,napoli,citta_lazio_roma,7) 
+
+partita(ritorno,atalanta,juventus,citta_bergamo,8) 
+partita(ritorno,inter,lazio,citta_milano,8) 
+partita(ritorno,bologna,milan,citta_bologna,8) 
+partita(ritorno,roma,napoli,citta_roma,8) 
+
+partita(ritorno,milan,atalanta,citta_milano,9) 
+partita(ritorno,napoli,bologna,citta_napoli,9) 
+partita(ritorno,roma,inter,citta_roma,9) 
+partita(ritorno,lazio,juventus,citta_lazio_roma,9)
+
+partita(ritorno,atalanta,bologna,citta_bergamo,10) 
+partita(ritorno,lazio,milan,citta_lazio_roma,10) 
+partita(ritorno,inter,napoli,citta_milano,10) 
+partita(ritorno,juventus,roma,citta_torino_stadium,10) 
+
+partita(ritorno,roma,atalanta,citta_roma,11) 
+partita(ritorno,bologna,inter,citta_bologna,11) 
+partita(ritorno,milan,juventus,citta_milano,11) 
+partita(ritorno,napoli,lazio,citta_napoli,11) 
+
+partita(ritorno,lazio,bologna,citta_lazio_roma,12) 
+partita(ritorno,juventus,inter,citta_torino_stadium,12) 
+partita(ritorno,atalanta,napoli,citta_bergamo,12) 
+partita(ritorno,milan,roma,citta_milano,12) 
+
+partita(ritorno,roma,bologna,citta_roma,13) 
+partita(ritorno,atalanta,lazio,citta_bergamo,13) 
+partita(ritorno,inter,milan,citta_milano,13) 
+partita(ritorno,juventus,napoli,citta_torino_stadium,13) 
+
+partita(ritorno,inter,atalanta,citta_milano,14) 
+partita(ritorno,bologna,juventus,citta_bologna,14) 
+partita(ritorno,roma,lazio,citta_roma,14) 
+partita(ritorno,napoli,milan,citta_napoli,14)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 0.113s (Solving: 0.06s 1st Model: 0.06s Unsat: 0.00s)
+CPU Time     : 0.521s
+Threads      : 8        (Winner: 0)

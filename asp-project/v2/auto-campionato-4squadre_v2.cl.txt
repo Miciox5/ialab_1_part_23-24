@@ -1,0 +1,4 @@
+Command: clingo-dl --parallel-mode=8 --opt-mode=optN --time-limit=7200 --propagate=full --models=1 --configuration=auto campionato-4squadre_v2.cl > risultato_campionato_20squadre.txt
+Execution time: .015605425 seconds
+Output:
+
