@@ -11,7 +11,7 @@ Esecuzione di esempio del codice:
 cd prolog-project/
 swipl -s startProject4x4facile.pl 
 ```
->**__NOTA__** Per testare gli altri domini, cambiare il file *startProject4x4facile.pl* con le seguenti possibilità:
+>__NOTA__ Per testare gli altri domini, cambiare il file *startProject4x4facile.pl* con le seguenti possibilità:
 >- startProject4x4difficile.pl
 >- startProject9x9facile.pl
 >- startProject9x9difficile.pl
@@ -25,27 +25,4 @@ Nel progetto di Prolog, è stato implementato un Sudoku Solver. Sono stati rappr
 
 In *azioni.pl* viene implementata una configurazione di predicati che, con forza bruta, cercano di risolvere il sudoku in input.
 
-## ATTIVITÀ 2: CLINGO
-### Comandi di esecuzione:
-Esecuzione di esempio su un dominio con 4 squadre:
-```
-cd asp-project/
-clingo campionato-4squadre.cl 
-```
-Il risultato è un modello con le tempistiche di esecuzione e le informazioni sulle risorse utilizzate.
-
->**__NOTA__** Per testare gli altri domini, cambiare il file *campionato-4squadre.cl* con le seguenti possibilità:
->- campionato-4squadre.cl
->- campionato-8squadre.cl
->- campionato-12squadre.cl
->- campionato-16squadre.cl
->- campionato-20squadre.cl
-### Introduzione al progetto:
-Nel progetto Clingo, è stato implementato un sistema per la generazione di un calendario di partite (andata e ritorno) con i vincoli richiesti dalla traccia.
-Sono state fatte varie prove sui seguenti domini:
-- un campionato a 4 squadre,
-- un campionato a 8 squadre,
-- un campionato a 12 squadre,
-- un campionato a 16 squadre,
-- un campionato a 20 squadre.
-Tutto ciò è servito per esaminare il codice creato, analizzare le tempistiche di esecuzione ed ottimizzare alcuni aspetti implementativi.
+[ATTIVITÀ 2: ANSWER SET PROGRAMMING IN CLINGO](./asp-project/README.md)

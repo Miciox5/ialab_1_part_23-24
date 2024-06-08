@@ -1,86 +1,86 @@
-% Ground
+% CAMPIONATO A 4 SQUADRE
+
+% Vincoli obbligatori
 % --------------------------------------
 
-%% Dominio con 4 squadre
-% -------------------
-squadra(juventus;
-    milan;
-    inter;
-    roma).
+% --- Ground ----
+team(inter;
+     juventus;
+     milan;
+     roma).
 
-citta(c_torino;
-        c_milano;
-        c_roma).
+% Ogni squadra fa riferimento ad una città, che offre la struttura in cui la squadra gioca gli incontri in casa;
+gioca_a(inter,citta_milano;
+        juventus,citta_torino_stadium;
+        milan,citta_milano;
+        roma,citta_roma).
 
-% Ogni squadra fa riferimento ad una città, che offre la struttura in cui la squadra gioca gli incontri in casa
-gioca_a(juventus,c_torino;
-        milan,c_milano;
-        inter,c_milano;
-        roma,c_roma).
+% Giornate: andata, ritorno
+giornata(1..6).
+giornata_andata(1..3).
+giornata_ritorno(4..6).
 
-giornata(andata,1..3).
-giornata(ritorno,4..6).
+% --- End ground ----
 
-partita(andata,S1,S2,G,C1):-
-    squadra(S1),
-    squadra(S2),
-    S1<>S2,
-    giornata(andata,G),
-    % ogni squadra fa riferimento ad una città, che offre la struttura in cui la squadra gioca gli incontri in casa;
-    gioca_a(S1,C1).
+% Ogni squadra si sfida all'andata e al ritorno un numero di volte pari al numero di squadre totali / 2 
+2 {partita(andata, SquadraA, SquadraB, Citta, N):
+    team(SquadraA), 
+    team(SquadraB), 
+    gioca_a(SquadraA,Citta),
+    SquadraA <> SquadraB} 2 :- giornata_andata(N).
 
-partita(ritorno,S1,S2,G,C1):-
-    squadra(S1),
-    squadra(S2),
-    S1<>S2,
-    giornata(ritorno,G),
-    % ogni squadra fa riferimento ad una città, che offre la struttura in cui la squadra gioca gli incontri in casa;
-    gioca_a(S1,C1).
+% le partite di ritorno sono speculari alle partite di andata ma in altre giornate
+2 {partita(ritorno, SquadraA, SquadraB, Citta, N): 
+    team(SquadraA), 
+    team(SquadraB), 
+    gioca_a(SquadraA, Citta),
+    partita(andata, SquadraB, SquadraA, Citta2, _),
+    gioca_a(SquadraB,Citta2)} 2:- giornata_ritorno(N).
 
-4 {partita(AR,S1,S2,G,C1):squadra} 4:-giornata(AR,G).
+% Nella stessa giornata, una squadra non può giocare 2 volte
+:-  team(Squadra), 
+    giornata(Giornata),
+    Numero_Partite_A = #count{SquadraA: partita(_,Squadra,SquadraA,_, Giornata)}, 
+    Numero_Partite_B = #count{SquadraB: partita(_,SquadraB,Squadra,_, Giornata)}, 
+    Numero_Partite_A + Numero_Partite_B <> 1.
 
-% Ad ogni squadra può giocare una partita in una giornata
- {partita(andata,S1,S2,G,C1): 
-    giornata(andata,G)} :-squadra(S1),squadra(S2),gioca_a(S1,C1).
+% Non può capitare che due squadre giocano 2 partite all'andata o al ritorno
+:-  partita(_, SquadraA, SquadraB, _, N1), 
+    partita(_, SquadraA, SquadraB, _, N2),
+    N1 <> N2.
 
+% Non può capitare che due squadre giocano andata e ritorno solo all'andata o solo al ritorno
+:-  partita(Tipo, SquadraA, SquadraB, _, _), 
+    partita(Tipo, SquadraB, SquadraA, _, _).
 
-% il campionato prevede 38 giornate, 19 di andata e 19 
-%   di ritorno NON simmetriche, ossia la giornata 1 di ritorno 
-%   non coincide necessariamente con 
-%   la giornata 1 di andata a campi invertiti;
-% 2  {partita(andata,S1,S2,G,C1):
-%     squadra(S1),    
-%     squadra(S2),
-%     S1!=S2,
-%     S1<S2,
-%     gioca_a(S1,C1)} 2 :- giornata(andata,G).
+% Le giornate di andata e ritorno NON sono simmetriche
+:-  partita(andata,SquadraA,SquadraB, _, G1), 
+    partita(ritorno,SquadraB,SquadraA, _, G2), 
+    G2 == G1 + 19.
 
-% 2  {partita(ritorno,S1,S2,G,C1):
-%     squadra(S1),    
-%     squadra(S2),
-%     S1!=S2,
-%     S1<S2,
-%     gioca_a(S1,C1)} 2 :- giornata(ritorno,G).
+% Non può capitare che 2 squadre diverse giocano partite differenti nello stesso stadio nella stessa giornata
+:-  partita(Tipo, Squadra1, _, C1, N), 
+    partita(Tipo, Squadra2, _, C2, N),
+    Squadra1 <> Squadra2,
+    C1 == C2.
 
-% npg(S,G,N) :-
-%     N = #count { 1 : partita(_, S, _, G, _) ; 1 : partita(_, _, S, G, _) }, 
-%     squadra(S),
-%     giornata(_, G),
-%     N <> 1.
+% Vincoli facoltativi
+% --------------------------------------
+% Ciascuna squadra non deve giocare mai più di due partite consecutive in casa o fuori casa;
+:-  partita(_, Squadra, _, _, G1),
+    partita(_, Squadra, _, _, G1+1),
+    partita(_, Squadra, _, _, G1+2).
 
-% :- npg(S,G,N), N!=1.
+:-  partita(_, _, Squadra, _, G1),
+    partita(_, _, Squadra, _, G1+1),
+    partita(_, _, Squadra, _, G1+2).
 
-% :- partita(andata,S1,S2,G,_), 
-%     partita(ritorno,S1,S2,G+2,_).
+% La distanza tra una coppia di gare di andata e ritorno è di almeno 10 giornate, (N squadre / 2)
+%  ossia se SquadraA vs SquadraB è programmata per la giornata 12, il ritorno
+%  SquadraB vs SquadraA verrà schedulato non prima dalla giornata 22.
 
-% :- partita(andata,S1,S2,G1,_), 
-%     partita(andata,S1,S2,G2,_), 
-%     G1!=G2,
-%     G1<G2. 
-
-% :- partita(ritorno,S1,S2,G3,_), 
-%     partita(ritorno,S1,S2,G4,_), 
-%     G3!=G4,
-%     G3<G4.
+:-  partita(andata, SquadraA, SquadraB, _, G1),
+    partita(ritorno, SquadraB, SquadraA, _, G2),
+    G2 - G1 < 2.
 
 #show partita/5.

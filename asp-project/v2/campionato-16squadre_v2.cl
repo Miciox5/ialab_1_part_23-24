@@ -1,4 +1,4 @@
-% CAMPIONATO A 12 SQUADRE
+% CAMPIONATO A 16 SQUADRE
 
 % Vincoli obbligatori
 % --------------------------------------
@@ -8,6 +8,9 @@ team(atalanta;
      bologna;
      cagliari;
      empoli;
+     fiorentina;
+     frosinone;
+     genoa;
      inter;
      juventus;
      lazio;
@@ -15,13 +18,17 @@ team(atalanta;
      milan;
      napoli;
      roma;
-     salernitana).
+     salernitana;
+     udinese).
 
 % Ogni squadra fa riferimento ad una città, che offre la struttura in cui la squadra gioca gli incontri in casa;
 gioca_a(atalanta,citta_bergamo;
         bologna,citta_bologna;
         cagliari,citta_cagliari;
         empoli,citta_empoli;
+        fiorentina,citta_firenze;
+        frosinone,citta_frosinone;
+        genoa,citta_genova;
         inter,citta_milano;
         juventus,citta_torino_stadium;
         lazio,citta_lazio_roma;
@@ -29,30 +36,30 @@ gioca_a(atalanta,citta_bergamo;
         milan,citta_milano;
         napoli,citta_napoli;
         roma,citta_roma;
-        salernitana,citta_salerno).
-
+        salernitana,citta_salerno;
+        udinese,citta_udine).
 
 % Giornate: andata, ritorno
-giornata(1..22).
-giornata_andata(1..11).
-giornata_ritorno(12..22).
+giornata(1..30).
+giornata_andata(1..15).
+giornata_ritorno(16..30).
 
 % --- End ground ----
 
 % Ogni squadra si sfida all'andata e al ritorno un numero di volte pari al numero di squadre totali / 2 
-6 {partita(andata, SquadraA, SquadraB, Citta, N):
+8 {partita(andata, SquadraA, SquadraB, Citta, N):
     team(SquadraA), 
     team(SquadraB), 
     gioca_a(SquadraA,Citta),
-    SquadraA <> SquadraB} 6 :- giornata_andata(N).
+    SquadraA <> SquadraB} 8 :- giornata_andata(N).
 
 % le partite di ritorno sono speculari alle partite di andata ma in altre giornate
-6 {partita(ritorno, SquadraA, SquadraB, Citta, N): 
+8 {partita(ritorno, SquadraA, SquadraB, Citta, N): 
     team(SquadraA), 
     team(SquadraB), 
     gioca_a(SquadraA, Citta),
     partita(andata, SquadraB, SquadraA, Citta2, _),
-    gioca_a(SquadraB,Citta2)} 6:- giornata_ritorno(N).
+    gioca_a(SquadraB,Citta2)} 8:- giornata_ritorno(N).
 
 % Nella stessa giornata, una squadra non può giocare 2 volte
 :-  team(Squadra), 
