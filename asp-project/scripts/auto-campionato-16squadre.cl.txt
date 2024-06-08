@@ -1,0 +1,16 @@
+Command: clingo-dl --parallel-mode=12 --opt-mode=optN --time-limit=7200 --propagate=full --models=1 --configuration=auto campionato-16squadre.cl
+Execution time: .017732748 seconds
+Output:
+clingo-dl version 1.5.0
+Reading from campionato-16squadre.cl
+*** Warn : (clingo-dl): Oversubscription: #Threads=12 exceeds logical CPUs=8.
+campionato-16squadre.cl:72:4-5: error: syntax error, unexpected {
+
+*** ERROR: (clingo-dl): syntax error
+UNKNOWN
+
+Models       : 0+
+Calls        : 1
+Time         : 0.005s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.005s
+Threads      : 12       (Winner: 0)

@@ -1,0 +1,11 @@
+clingo version 5.7.1
+Reading from campionato-4squadre_v2.cl
+Solving...
+Answer: 1
+partita(ritorno,milan,inter,4,c_milano) partita(ritorno,roma,juventus,4,c_roma) partita(ritorno,roma,inter,4,c_roma) partita(ritorno,juventus,roma,5,c_torino) partita(ritorno,inter,milan,5,c_milano) partita(ritorno,inter,roma,5,c_milano) partita(ritorno,milan,inter,6,c_milano) partita(ritorno,roma,juventus,6,c_roma) partita(ritorno,roma,inter,6,c_roma) partita(andata,juventus,milan,1,c_torino) partita(andata,juventus,inter,1,c_torino) partita(andata,roma,milan,1,c_roma) partita(andata,milan,juventus,2,c_milano) partita(andata,milan,roma,2,c_milano) partita(andata,inter,juventus,2,c_milano) partita(andata,juventus,milan,3,c_torino) partita(andata,juventus,inter,3,c_torino) partita(andata,roma,milan,3,c_roma)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 0.003s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.003s

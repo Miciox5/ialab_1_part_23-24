@@ -1,0 +1,18 @@
+Command: clingo-dl --parallel-mode=12,split --time-limit=7200 --propagate=full --models=1 --propagate-budget=200,12 --configuration=auto campionato-20squadre.cl
+Execution time: 7200.923308713 seconds
+Output:
+clingo-dl version 1.5.0
+Reading from campionato-20squadre.cl
+*** Warn : (clingo-dl): Oversubscription: #Threads=12 exceeds logical CPUs=8.
+Solving...
+*** Info : (clingo-dl): Sending shutdown signal...
+*** ERROR: (clingo-dl): solving stopped by signal
+*** Info : (clingo-dl): Shutdown completed in 0.003 seconds
+UNKNOWN
+
+TIME LIMIT   : 1
+Models       : 0+
+Calls        : 1
+Time         : 7200.011s (Solving: 6969.04s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 55659.945s
+Threads      : 12       (Winner: 12)

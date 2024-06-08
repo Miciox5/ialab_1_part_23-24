@@ -1,0 +1,7 @@
+Command: clingo-dl --parallel-mode=12,split --time-limit=7200 --propagate=full --models=1 --propagate-budget=200,12 --configuration=handy campionato-20squadre.cl
+Execution time: 4126.274043294 seconds
+Output:
+clingo-dl version 1.5.0
+Reading from campionato-20squadre.cl
+*** Warn : (clingo-dl): Oversubscription: #Threads=12 exceeds logical CPUs=8.
+Solving...
