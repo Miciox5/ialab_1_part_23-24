@@ -38,7 +38,7 @@ do
 done
 
 # Save the results to a file
-echo -e "$results" > auto-${file_name}.txt
+echo -e "$results" > risultato_${file_name}.txt
 
 # Function to send a message to Telegram
 send_telegram_message() {

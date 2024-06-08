@@ -39,7 +39,7 @@ partita(andata,napoli,frosinone,citta_napoli,4)
 partita(andata,roma,cagliari,citta_roma,4) 
 partita(andata,salernitana,milan,citta_salerno,4) 
 
-partita(andata,atalanta,napoli,citta_bergamo,5) 
+partita(andata,atalanta,napoli,citta_b10.0ergamo,5) 
 partita(andata,bologna,juventus,citta_bologna,5) 
 partita(andata,cagliari,inter,citta_cagliari,5) 
 partita(andata,fiorentina,genoa,citta_firenze,5) 
