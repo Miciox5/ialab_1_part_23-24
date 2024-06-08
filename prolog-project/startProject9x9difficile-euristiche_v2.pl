@@ -4,12 +4,11 @@
 main :-
     % Caricamento dei file necessari
     consult('sudoku/dominio9x9difficile.pl'),
-    consult('sudoku/azioni.pl'),
+    consult('sudoku/azioni-euristiche_v2.pl'),
     consult('sudoku/strategia.pl'),
     write('File loaded. Ready to go!\n'),
     main_program.
 
-% Ritornato sia il Cammino, sia il tempo di esecuzione 
 main_program :-
     writeln('This is your main program.\n'),
     statistics(runtime, [Start|_]),

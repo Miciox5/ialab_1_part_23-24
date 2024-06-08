@@ -1,26 +1,24 @@
-% load_file.pl
 
-% This predicate will be called when the file is consulted
 :- initialization(main, main).
 
 main :-
-    % Replace 'your_file.pl' with the actual name of your Prolog file
+    % Caricamento dei file necessari
     consult("sudoku/dominio4x4facile.pl"),
     consult("sudoku/azioni.pl"),
     consult("sudoku/strategia.pl"),
     write('File loaded. Ready to go!\n'),
-    % Add any additional initialization or actions here
-    % For example, you can start your main program or query user input
     main_program.
 
+% Ritornato sia il Cammino, sia il tempo di esecuzione 
 main_program :-
-    write('This is your main program.\n'),
-    % Add your main program logic here
-    % Enable tracing
-    % trace,
-    % Call your predicate with trace enabled
-    strategiaDiRicerca(Cammino).
-    % If you want to start an interactive shell, you can use the following:
-    % prolog.
-    % halt.  % Exit SWI-Prolog after executing the main program
-    %nodebug.  % Disable tracing before entering the interactive shell
+    writeln('This is your main program.\n'),
+    statistics(runtime, [Start|_]),
+    strategiaDiRicerca(Cammino),!,
+    writeln(Cammino),
+    statistics(runtime, [End|_]),
+    format('Start time: ~w ms~n', [Start]),
+    format('End time: ~w ms~n', [End]),
+    Time is (End - Start) / 1000,
+    format('Time taken: ~3f seconds~n', [Time]).
+
+

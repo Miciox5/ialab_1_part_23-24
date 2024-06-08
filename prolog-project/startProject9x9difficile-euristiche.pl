@@ -4,7 +4,7 @@
 main :-
     % Caricamento dei file necessari
     consult('sudoku/dominio9x9difficile.pl'),
-    consult('sudoku/azioni.pl'),
+    consult('sudoku/azioni-euristiche.pl'),
     consult('sudoku/strategia.pl'),
     write('File loaded. Ready to go!\n'),
     main_program.

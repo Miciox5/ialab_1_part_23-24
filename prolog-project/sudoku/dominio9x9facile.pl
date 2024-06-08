@@ -1,10 +1,11 @@
-% DOMINIO SUDOKU 4x4
+% DOMINIO SUDOKU 9x9 facile
 :- discontiguous vuota/2.
 :- discontiguous piena/2.
 :- dynamic vuota/2.
 :- retractall(vuota(_, _)).  %per partire da uno stato pulito senza considerare i precedenti fatti asseriti
 
 valoreMax(9).
+sommaValoriCelle(405).
 
 listaPoxVal([1,2,3,4,5,6,7,8,9]).
 
@@ -144,51 +145,62 @@ griglia(9,[pos(7,7),pos(7,8),pos(7,9),
 
 %% PREDICATO DI USCITA: 
 
+% finale:-
+%         % Prima riga
+%         vuota(pos(1,1),7),
+%         vuota(pos(1,4),2),
+%         vuota(pos(1,5),6),
+%         vuota(pos(1,6),4),
+%         vuota(pos(1,7),8),
+
+%         % Seconda riga
+%         vuota(pos(2,1),8),
+%         vuota(pos(2,2),5),
+%         vuota(pos(2,4),9),
+%         vuota(pos(2,6),7),
+%         vuota(pos(2,7),1),
+%         vuota(pos(2,9),4),
+
+%         % Terza riga
+%         vuota(pos(3,2),4),
+%         vuota(pos(3,4),8),
+%         vuota(pos(3,6),5),
+
+%         % Quarta riga
+%         vuota(pos(4,7),3),
+
+%         % Quinta riga
+%         vuota(pos(5,4),6),
+
+%         % Sesta riga
+%         vuota(pos(6,1),4),
+%         vuota(pos(6,8),8),
+%         vuota(pos(6,9),9),
+
+%         % Settima riga
+%         vuota(pos(7,4),7),
+%         vuota(pos(7,8),3),
+
+%         % Ottava riga
+%         vuota(pos(8,3),7),
+%         vuota(pos(8,4),1),
+%         vuota(pos(8,5),4),
+
+%         % Nona riga
+%         vuota(pos(9,1),1),
+%         vuota(pos(9,2),6),
+%         vuota(pos(9,3),5),
+%         vuota(pos(9,4),3),
+%         vuota(pos(9,6),9),
+%         vuota(pos(9,7),4).
+
 finale:-
-        % Prima riga
-        vuota(pos(1,1),7),
-        vuota(pos(1,4),2),
-        vuota(pos(1,5),6),
-        vuota(pos(1,6),4),
-        vuota(pos(1,7),8),
+        findall(Valore, piena(pos(_,_),Valore); vuota(pos(_,_),Valore), ListaValoriP),
+        sommaLista(ListaValoriP,SommaP),
+        sommaValoriCelle(SVC),
+        SommaP is SVC.
 
-        % Seconda riga
-        vuota(pos(2,1),8),
-        vuota(pos(2,2),5),
-        vuota(pos(2,4),9),
-        vuota(pos(2,6),7),
-        vuota(pos(2,7),1),
-        vuota(pos(2,9),4),
-
-        % Terza riga
-        vuota(pos(3,2),4),
-        vuota(pos(3,4),8),
-        vuota(pos(3,6),5),
-
-        % Quarta riga
-        vuota(pos(4,7),3),
-
-        % Quinta riga
-        vuota(pos(5,4),6),
-
-        % Sesta riga
-        vuota(pos(6,1),4),
-        vuota(pos(6,8),8),
-        vuota(pos(6,9),9),
-
-        % Settima riga
-        vuota(pos(7,4),7),
-        vuota(pos(7,8),3),
-
-        % Ottava riga
-        vuota(pos(8,3),7),
-        vuota(pos(8,4),1),
-        vuota(pos(8,5),4),
-
-        % Nona riga
-        vuota(pos(9,1),1),
-        vuota(pos(9,2),6),
-        vuota(pos(9,3),5),
-        vuota(pos(9,4),3),
-        vuota(pos(9,6),9),
-        vuota(pos(9,7),4).
+sommaLista([],0).
+sommaLista([H|Tail],SommaN):-
+    sommaLista(Tail,Somma),
+    SommaN is Somma+H.
