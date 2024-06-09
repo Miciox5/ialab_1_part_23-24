@@ -1,8 +1,10 @@
 # ATTIVITÀ 2: ANSWER SET PROGRAMMING IN CLINGO
 
 ## Introduzione al progetto:
+
 Nel progetto Clingo, è stato implementato un sistema per la generazione di un calendario di partite (andata e ritorno) con i vincoli richiesti dalla traccia.
 Sono state fatte varie prove sui seguenti domini:
+
 - un campionato a 4 squadre,
 - un campionato a 8 squadre,
 - un campionato a 12 squadre,
