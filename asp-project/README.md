@@ -13,7 +13,7 @@ Sono state fatte varie prove sui seguenti domini:
 
 Tutto ciò è servito per esaminare il codice creato, analizzare le tempistiche di esecuzione ed ottimizzare alcuni aspetti implementativi.
 
->__NOTA__ L'implementazione, nella sua seconda versione, cambia soprattutto nella parte del Groud poiché sono stati tagliati dei predicati specifici del dominio. Di conseguenza, abbiamo modificato anche i predicati e con ciò, abbiamo notato come le prestazioni migliorano nettamente, tagliando in particolare il numero dei predicati.
+>**NOTA** L'implementazione, nella sua seconda versione, cambia soprattutto nella parte del Groud poiché sono stati tagliati dei predicati specifici del dominio. Di conseguenza, abbiamo modificato anche i predicati e con ciò, abbiamo notato come le prestazioni migliorano nettamente, tagliando in particolare il numero dei predicati.
 
 ## (Versione 1) Comandi di esecuzione
 
@@ -24,7 +24,7 @@ cd asp-project/v1/
 clingo --models=1 campionato-4squadre.cl 
 ```
 
->__NOTA__ Per testare gli altri domini, cambiare il file *campionato-4squadre.cl* con le seguenti possibilità:
+>**NOTA** Per testare gli altri domini, cambiare il file *campionato-4squadre.cl* con le seguenti possibilità:
 >
 > - [campionato-4squadre.cl](./v1/campionato-4squadre.cl)
 > - [campionato-8squadre.cl](./v1/campionato-8squadre.cl)
@@ -47,7 +47,7 @@ cd asp-project/v1/
 clingo --models=1 campionato-4squadre_v2.cl 
 ```
 
->__NOTA__ Per testare gli altri domini, cambiare il file *campionato-4squadre.cl* con le seguenti possibilità:
+>**NOTA** Per testare gli altri domini, cambiare il file *campionato-4squadre.cl* con le seguenti possibilità:
 >
 > - [campionato-4squadre_v2.cl](./v2/campionato-4squadre_v2.cl)
 > - [campionato-8squadre_v2.cl](./v2/campionato-8squadre_v2.cl)
@@ -80,4 +80,4 @@ export NUM_SQUADRE=20
 ./auto_clingo.sh $NUM_SQUADRE
 ```
 
->__NOTA__: Consultare la sezione [Pre-requisito](#pre-requisiti-per-ottimizzazione) prima di eseguire.
+>**NOTA**: Consultare la sezione [Pre-requisito](#pre-requisiti-per-ottimizzazione) prima di eseguire.
