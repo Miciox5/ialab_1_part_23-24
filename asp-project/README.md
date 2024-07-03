@@ -54,6 +54,8 @@ clingo --models=1 campionato-4squadre_v2.cl
 > - [campionato-12squadre_v2.cl](./v2/campionato-12squadre_v2.cl)
 > - [campionato-16squadre_v2.cl](./v2/campionato-16squadre_v2.cl)
 > - [campionato-20squadre_v2.cl](./v2/campionato-20squadre_v2.cl)
+>
+> Con domini di grandi dimensioni, è consigliato la definizione dei threads tramite la specifica ```-t <n-threads>``` nel comando di esecuzione. E' consigliata la definizione di 1 singolo threads per CPU.
 
 Il risultato è un modello con le tempistiche di esecuzione e le informazioni sulle risorse utilizzate.
 
@@ -69,15 +71,29 @@ conda activate <your-environment>
 pip install clingo-dl
 ```
 
+### Configurazione notifiche telegram
+
+Bisogna poi configurarsi un canale telegram personale ([link di esempio](https://www.directual.com/lesson-library/how-to-create-a-telegram-bot)).
+Da qui, bisogna recuperare **BOT_TOKEN** e **CHAT_ID**, creare un file ```.env``` e definire le variabili di ambiente all'interno di esso.
+
+Esempio del file ```.env```:
+
+```shell
+export BOT_TOKEN="<your-bot-token>" && echo "BOT_TOKEN=\"$BOT_TOKEN\"" >> .env
+export CHAT_ID="<your-chat-id>" && echo "CHAT_ID=\"$CHAT_ID\"" >> .env
+```
+
 ## Esecuzione di V1 e V2 con ottimizzazioni
 
-Esecuzione di esempio su un dominio con 20 squadre con ottimizzazioni (l'esempio riportato è su *v2*. Se lo si vuole eseguire sulla prima versione, basta sostituire *v2* con *v1*):
+Esecuzione di esempio su un dominio con 20 squadre con ottimizzazioni e notifica su un proprio canale Telegram.
 
 ```shell
 cd asp-project/v2/
-sudo chmod +x auto_clingo.sh
+chmod +x auto_clingo.sh
 export NUM_SQUADRE=20
 ./auto_clingo.sh $NUM_SQUADRE
 ```
+
+L'esempio riportato è su *v2*. Se lo si vuole eseguire sulla prima versione, basta sostituire *v2* con *v1*.
 
 >**NOTA**: Consultare la sezione [Pre-requisito](#pre-requisiti-per-ottimizzazione) prima di eseguire.

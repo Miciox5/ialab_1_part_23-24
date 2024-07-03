@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Load environment variables from .env file
+source .env
+
 # Check if the correct number of arguments is provided
 if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <number_of_teams>"
