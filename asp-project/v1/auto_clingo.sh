@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Load environment variables from .env file
+source .env
+
 # Check if the correct number of arguments is provided
 if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <number_of_teams>"
@@ -9,9 +12,6 @@ fi
 # Get the number of teams from the first argument
 num_teams=$1
 file_name="campionato-${num_teams}squadre.cl"
-
-BOT_TOKEN="6885926816:AAEfQzLwm-CiUnMV066MzcUlLdkRjqrCXG8"
-CHAT_ID="371334054"
 
 # Commands to execute
 commands=(
@@ -40,7 +40,7 @@ done
 # Save the results to a file
 echo -e "$results" > risultato_${file_name}.txt
 
-# Function to send a message to Telegram
+# Function to send a message to Telegram. Define your own BOT_TOKEN and your CHAT_ID
 send_telegram_message() {
     local message=$1
     curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id=$CHAT_ID -d text="$message"

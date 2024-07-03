@@ -10,9 +10,6 @@ fi
 num_teams=$1
 file_name="campionato-${num_teams}squadre_v2.cl"
 
-BOT_TOKEN="6885926816:AAEfQzLwm-CiUnMV066MzcUlLdkRjqrCXG8"
-CHAT_ID="371334054"
-
 # Commands to execute
 commands=(
     "echo 'Begin-of-execution - ${num_teams} teams execution:'"
@@ -40,7 +37,7 @@ done
 # Save the results to a file
 echo -e "$results" > risultato_${file_name}.txt
 
-# Function to send a message to Telegram
+# Function to send a message to Telegram. Define your own BOT_TOKEN and your CHAT_IDS
 send_telegram_message() {
     local message=$1
     curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id=$CHAT_ID -d text="$message"
