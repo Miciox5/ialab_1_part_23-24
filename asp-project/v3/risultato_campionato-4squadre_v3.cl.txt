@@ -1,0 +1,15 @@
+Command: clingo-dl --parallel-mode=8 --opt-mode=optN --time-limit=7200 --propagate=full --models=1 --configuration=auto campionato-4squadre_v3.cl
+Execution time: .027402963 seconds
+Output:
+clingo-dl version 1.5.0
+Reading from campionato-4squadre_v3.cl
+Solving...
+Answer: 1
+partita(andata,2,4,2,1) partita(andata,3,1,1,1) partita(andata,3,2,1,2) partita(andata,4,1,4,2) partita(andata,1,2,1,3) partita(andata,4,3,4,3) partita(ritorno,2,3,2,4) partita(ritorno,1,4,1,4) partita(ritorno,2,1,2,5) partita(ritorno,3,4,1,5) partita(ritorno,4,2,4,6) partita(ritorno,1,3,1,6)
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 0.013s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.017s
+Threads      : 8        (Winner: 4)
